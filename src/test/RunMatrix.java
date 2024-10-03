@@ -1,5 +1,5 @@
-package test;
-import bin.*;
+package src.test;
+import src.Matrix;
 
 public class RunMatrix {
     public static void main(String[] args){
