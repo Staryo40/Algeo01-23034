@@ -1,4 +1,4 @@
-package matrix;
+package src;
 
 public class Matrix {
     int[][] mem;
