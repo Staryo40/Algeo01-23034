@@ -38,7 +38,42 @@ public class Matrix {
                 }
 
             }
-            System.out.println("");
+            System.out.println();
+        }
+    }
+
+    // Fungsi yang mengembalikan hasil augment matrix self ke matrix m
+    public Matrix Augment(Matrix m) {
+        Matrix newMatrix = new Matrix(rowEff, colEff + m.colEff);
+        for (int i = 0; i < newMatrix.rowEff; i++) {
+            for (int j = 0; j < newMatrix.colEff; j++) {
+                if (j < colEff) {
+                    newMatrix.mem[i][j] = mem[i][j];
+                }
+                else {
+                    newMatrix.mem[i][j] = m.mem[i][j-colEff];
+                }
+            }
+        }
+        return newMatrix;
+    }
+
+    /* Operasi Baris Elementer */
+    public void RowSwap(int row1, int row2) {
+        float[] temp = mem[row1];
+        mem[row1] = mem[row2];
+        mem[row2] = temp;
+    }
+
+    public void RowMultiply(int targetRow, float mult) {
+        for (int i = 0; i < colEff; i++) {
+            mem[targetRow][i] *= mult;
+        }
+    }
+
+    public void RowAddition(int targetRow, int additionRow, float mult) {
+        for (int i = 0; i < colEff; i++) {
+            mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i]; 
         }
     }
 
