@@ -1,4 +1,5 @@
 package bin;
+import java.util.Scanner;
 
 public class Matrix {
     float[][] mem;
@@ -39,6 +40,34 @@ public class Matrix {
 
             }
             System.out.println("");
+        }
+    }
+
+    // Function to read matrix
+    Scanner scanner = new Scanner(System.in);
+    public void readMatrix(){
+        System.out.print("Jumlah row: ");
+        rowEff = scanner.nextInt();
+
+        System.out.print("Jumlah column: ");
+        colEff = scanner.nextInt();
+        scanner.nextLine();
+
+        mem = new float[rowEff][colEff];
+        System.out.println("Enter per baris dengan spasi antar kolom: ");
+        for (int i = 0; i < rowEff; i++){
+            String inputRow = scanner.nextLine();
+            String[] sepRow = inputRow.split(" ");
+
+            if (sepRow.length != colEff) {
+                System.out.println("Error: Expected " + colEff + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
+                i--;
+                continue; 
+            }
+
+            for (int j = 0; j < colEff; j++){
+                mem[i][j] = Float.parseFloat(sepRow[j]);
+            }
         }
     }
 
