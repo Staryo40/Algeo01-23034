@@ -1,21 +1,68 @@
 package bin;
 
 public class Matrix {
-    float[][] mem;
-    int rowEff;
-    int colEff;
+    public static final Matrix UNDEFINED = new Matrix(-1, -1);
+
+    public float[][] mem;
+    public int rowEff;
+    public int colEff;
 
     // Constructor
     public Matrix(int nRow,int nCol){
         rowEff = nRow;
         colEff = nCol;
-        mem = new float[nRow][nCol]; 
-        for (int i = 0; i < nRow; i++){
-            for (int j = 0; j < nCol; j++){
-                mem[i][j] = 0;
-            } 
+        if (rowEff >= 0 && colEff >= 0) {
+            mem = new float[nRow][nCol]; 
+            for (int i = 0; i < nRow; i++){
+                for (int j = 0; j < nCol; j++){
+                    mem[i][j] = 0;
+                } 
+            }
+        }
+        else {
+            mem = new float[0][0];
         }
     }   
+
+    public boolean IsEqualTo(Matrix m) {
+        if (rowEff != m.rowEff || colEff != m.colEff) {
+            return false;
+        }
+        for (int i = 0; i < rowEff; i++) {
+            for (int j = 0; j < colEff; j++) {
+                if (mem[i][j] != m.mem[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean IsSquare() {
+        return (rowEff == colEff);
+    }
+
+    public Matrix GetIdentity() {
+        Matrix newMatrix = new Matrix(colEff, colEff);
+        for (int i = 0; i < colEff; i++) {
+            newMatrix.mem[i][i] = 1;
+        }
+        return newMatrix;
+    }
+
+    public Matrix GetInverse() {
+        Matrix augmentedMatrix = this.Augment(this.GetIdentity());
+        GaussJordan gaussJordan = new GaussJordan();
+        augmentedMatrix = gaussJordan.GaussJordanElimination(augmentedMatrix);
+        Matrix supposedIdentity = augmentedMatrix.GetSubMatrix(0, 0, this.rowEff, this.colEff);
+
+        if (supposedIdentity.IsEqualTo(supposedIdentity.GetIdentity())) {
+            return augmentedMatrix.GetSubMatrix(0, this.colEff, this.rowEff, this.colEff);
+        }
+        else {
+            return Matrix.UNDEFINED;
+        }
+    }
 
     // Function to help format float
      public static String formatFloat(float value) {
@@ -53,6 +100,17 @@ public class Matrix {
                 else {
                     newMatrix.mem[i][j] = m.mem[i][j-colEff];
                 }
+            }
+        }
+        return newMatrix;
+    }
+
+    // Fungsi yang mengembalikan sub matrix sesuai parameter
+    public Matrix GetSubMatrix(int iStart, int jStart, int nRow, int nCol) {
+        Matrix newMatrix = new Matrix(nRow, nCol);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol; j++) {
+                newMatrix.mem[i][j] = mem[i + iStart][j + jStart];
             }
         }
         return newMatrix;
