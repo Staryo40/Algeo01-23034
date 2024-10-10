@@ -1,4 +1,6 @@
 package bin;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Matrix {
@@ -8,7 +10,7 @@ public class Matrix {
     public int rowEff;
     public int colEff;
 
-    // Constructor
+    // KONSTRUKTOR
     public Matrix(int nRow,int nCol){
         rowEff = nRow;
         colEff = nCol;
@@ -25,46 +27,7 @@ public class Matrix {
         }
     }   
 
-    public boolean IsEqualTo(Matrix m) {
-        if (rowEff != m.rowEff || colEff != m.colEff) {
-            return false;
-        }
-        for (int i = 0; i < rowEff; i++) {
-            for (int j = 0; j < colEff; j++) {
-                if (mem[i][j] != m.mem[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean IsSquare() {
-        return (rowEff == colEff);
-    }
-
-    public Matrix GetIdentity() {
-        Matrix newMatrix = new Matrix(colEff, colEff);
-        for (int i = 0; i < colEff; i++) {
-            newMatrix.mem[i][i] = 1;
-        }
-        return newMatrix;
-    }
-
-    public Matrix GetInverse() {
-        Matrix augmentedMatrix = this.Augment(this.GetIdentity());
-        GaussJordan gaussJordan = new GaussJordan();
-        augmentedMatrix = gaussJordan.GaussJordanElimination(augmentedMatrix);
-        Matrix supposedIdentity = augmentedMatrix.GetSubMatrix(0, 0, this.rowEff, this.colEff);
-
-        if (supposedIdentity.IsEqualTo(supposedIdentity.GetIdentity())) {
-            return augmentedMatrix.GetSubMatrix(0, this.colEff, this.rowEff, this.colEff);
-        }
-        else {
-            return Matrix.UNDEFINED;
-        }
-    }
-
+    // I/O TERMINAL MATRIX  
     // Function to help format float
      public static String formatFloat(float value) {
         if (value == Math.floor(value)) {
@@ -87,6 +50,133 @@ public class Matrix {
 
             }
             System.out.println();
+        }
+    }
+
+    // Function to read matrix via KEYBOARD
+    public void readMatrixKeyBoard(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Jumlah row: ");
+        rowEff = scanner.nextInt();
+
+        System.out.print("Jumlah column: ");
+        colEff = scanner.nextInt();
+        scanner.nextLine();
+
+        mem = new float[rowEff][colEff];
+        System.out.println("Enter per baris dengan spasi antar kolom: ");
+        for (int i = 0; i < rowEff; i++){
+            String inputRow = scanner.nextLine();
+            String[] sepRow = inputRow.split(" ");
+
+            if (sepRow.length != colEff) {
+                System.out.println("Error: Expected " + colEff + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
+                i--;
+                continue; 
+            }
+
+            for (int j = 0; j < colEff; j++){
+                mem[i][j] = Float.parseFloat(sepRow[j]);
+            }
+        }
+    }
+
+    // Function to read matrix via FILE.TXT
+    public void readMatrixFile(String filename){
+        try {
+        File myObj = new File(filename);
+        Scanner myReader = new Scanner(myObj);
+        
+        int tempRowEff = 0;
+        int tempColEff = 0;
+
+        // Counting rows and columns first
+        while (myReader.hasNextLine()) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" ");
+            
+            tempRowEff++;
+            if (values.length > tempColEff){
+                tempColEff = values.length;
+            }
+        }
+
+        // Assigning primitive matrix attributes
+        colEff = tempColEff;
+        rowEff = tempRowEff;
+        mem = new float[rowEff][colEff];
+
+        // Closing and reopening file
+        myReader.close();
+        myReader = new Scanner(myObj);
+
+        // Assigning values to new array
+        int rowCount = 0;
+        while (myReader.hasNextLine()) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" "); 
+
+            for (int i = 0; i < colEff; i++){
+                if (i < values.length && !values[i].isEmpty()){
+                    mem[rowCount][i] = Float.parseFloat(values[i]);
+                } else {
+                    mem[rowCount][i] = 0;
+                }
+            }
+            rowCount++;
+        }
+        myReader.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing numbers.");
+            e.printStackTrace();
+        }
+    }
+
+    // OPERASI BOOLEAN
+    public boolean IsEqualTo(Matrix m) {
+        if (rowEff != m.rowEff || colEff != m.colEff) {
+            return false;
+        }
+        for (int i = 0; i < rowEff; i++) {
+            for (int j = 0; j < colEff; j++) {
+                if (mem[i][j] != m.mem[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean IsSquare() {
+        return (rowEff == colEff);
+    }
+
+    // OPERASI DASAR
+    // Membuat matrix identitas dengan dimensi yang sama
+    public Matrix GetIdentity() {
+        Matrix newMatrix = new Matrix(colEff, colEff);
+        for (int i = 0; i < colEff; i++) {
+            newMatrix.mem[i][i] = 1;
+        }
+        return newMatrix;
+    }
+
+    // Invers dari matrix dengan Gauss-Jordan
+    public Matrix GetInverse() {
+        Matrix augmentedMatrix = this.Augment(this.GetIdentity());
+        GaussJordan gaussJordan = new GaussJordan();
+        augmentedMatrix = gaussJordan.GaussJordanElimination(augmentedMatrix);
+        Matrix supposedIdentity = augmentedMatrix.GetSubMatrix(0, 0, this.rowEff, this.colEff);
+
+        if (supposedIdentity.IsEqualTo(supposedIdentity.GetIdentity())) {
+            return augmentedMatrix.GetSubMatrix(0, this.colEff, this.rowEff, this.colEff);
+        }
+        else {
+            return Matrix.UNDEFINED;
         }
     }
 
@@ -117,56 +207,26 @@ public class Matrix {
         return newMatrix;
     }
 
-    /* Operasi Baris Elementer */
+    // OPERASI BARIS ELEMENTER
+    // Menukar baris
     public void RowSwap(int row1, int row2) {
         float[] temp = mem[row1];
         mem[row1] = mem[row2];
         mem[row2] = temp;
     }
 
+    // Mengali baris
     public void RowMultiply(int targetRow, float mult) {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] *= mult;
         }
     }
 
+    // Menambahkan baris dengan kelipatan baris lain
     public void RowAddition(int targetRow, int additionRow, float mult) {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i]; 
         }
-    }
-
-    // Function to read matrix
-    Scanner scanner = new Scanner(System.in);
-    public void readMatrix(){
-        System.out.print("Jumlah row: ");
-        rowEff = scanner.nextInt();
-
-        System.out.print("Jumlah column: ");
-        colEff = scanner.nextInt();
-        scanner.nextLine();
-
-        mem = new float[rowEff][colEff];
-        System.out.println("Enter per baris dengan spasi antar kolom: ");
-        for (int i = 0; i < rowEff; i++){
-            String inputRow = scanner.nextLine();
-            String[] sepRow = inputRow.split(" ");
-
-            if (sepRow.length != colEff) {
-                System.out.println("Error: Expected " + colEff + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
-                i--;
-                continue; 
-            }
-
-            for (int j = 0; j < colEff; j++){
-                mem[i][j] = Float.parseFloat(sepRow[j]);
-            }
-        }
-    }
-
-    // Function to get element from row and column
-    public float getElmt(Matrix m, int row, int col){
-        return m.mem[row][col];
     }
 }
 
