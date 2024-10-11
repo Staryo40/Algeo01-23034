@@ -2,7 +2,7 @@ package bin;
 
 public class GaussJordan {
 
-    public int FindPotentialLeadingOne(Matrix m, int idx) {
+    public static int FindPotentialLeadingOne(Matrix m, int idx) {
         for (int i = 0; i < m.rowEff; i++) {
             for (int j = 0; j < m.colEff; j++) {
                 if (j < idx && m.mem[i][j] != 0) {
@@ -16,7 +16,7 @@ public class GaussJordan {
         return -1;
     }
 
-    public Matrix GaussElimination(Matrix m) {
+    public static Matrix GaussElimination(Matrix m) {
         int leadingIdx = 0;
         int targetIdx;
         for (int i = 0; i < m.rowEff; i++) {
@@ -46,7 +46,7 @@ public class GaussJordan {
         return m;
     }
 
-    public Matrix GaussJordanElimination(Matrix m) {
+    public static Matrix GaussJordanElimination(Matrix m) {
         int leadingIdx = 0;
         int targetIdx;
         for (int i = 0; i < m.rowEff; i++) {

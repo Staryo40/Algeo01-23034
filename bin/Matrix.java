@@ -168,8 +168,7 @@ public class Matrix {
     // Invers dari matrix dengan Gauss-Jordan
     public Matrix GetInverse() {
         Matrix augmentedMatrix = this.Augment(this.GetIdentity());
-        GaussJordan gaussJordan = new GaussJordan();
-        augmentedMatrix = gaussJordan.GaussJordanElimination(augmentedMatrix);
+        augmentedMatrix = GaussJordan.GaussJordanElimination(augmentedMatrix);
         Matrix supposedIdentity = augmentedMatrix.GetSubMatrix(0, 0, this.rowEff, this.colEff);
 
         if (supposedIdentity.IsEqualTo(supposedIdentity.GetIdentity())) {
