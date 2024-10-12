@@ -253,6 +253,36 @@ public class Matrix {
         return res;
     }
 
+    // Perkalian dot vektor/matrix kolom
+    public float vectorDot(Matrix m){
+        float res = 0;
+        for (int i=0;i<rowEff;i++){
+            res += this.mem[i][0] * m.mem[i][0];
+        }
+        return res;
+    }
+
+    // Menghasilkan matrix yang setiap elemennya perkalian dari dua elemen matrix sama dimensi
+    public Matrix multiplyElement(Matrix m){
+        /*
+         * Contoh:
+         *  1 2 3   x   2 2 2  ->  2 4 6
+         *  4 5 6       2 2 2      8 10 12
+         * 
+         */
+        Matrix res = new Matrix(rowEff, colEff);
+        int i=0, j=0;
+        while (i<m.rowEff){
+            j=0;
+            while (j<m.colEff){
+                res.mem[i][j] = m.mem[i][j] * this.mem[i][j];
+                j++;
+            }
+            i++;
+        }
+
+        return res;
+    }
     // OPERASI BARIS ELEMENTER
     // Menukar baris
     public void RowSwap(int row1, int row2) {
