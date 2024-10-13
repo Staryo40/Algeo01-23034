@@ -206,6 +206,82 @@ public class Matrix {
         return newMatrix;
     }
 
+    public Matrix rightMultiply(Matrix m){
+        Matrix res = new Matrix(this.rowEff, m.colEff);
+        if (this.colEff!=m.rowEff){
+            return Matrix.UNDEFINED;
+        }
+
+        int row1=0, joint=0, col2=0;
+        while (row1<this.rowEff){
+            col2 = 0;
+            while (col2<m.colEff){
+               joint = 0;
+               while (joint<m.rowEff){
+                  res.mem[row1][col2] += this.mem[row1][joint] * m.mem[joint][col2];
+                  joint++;
+               }
+               col2++;
+            }
+            row1++;
+        }
+
+        return res;
+    }
+
+    public Matrix leftMultiply(Matrix m){
+        Matrix res = new Matrix(this.rowEff, m.colEff);
+        if (m.colEff!=this.rowEff){
+            return Matrix.UNDEFINED;
+        }
+
+        int row1=0, joint=0, col2=0;
+        while (row1<m.rowEff){
+            col2 = 0;
+            while (col2<this.colEff){
+               joint = 0;
+               while (joint<this.rowEff){
+                  res.mem[row1][col2] += m.mem[row1][joint] * this.mem[joint][col2];
+                  joint++;
+               }
+               col2++;
+            }
+            row1++;
+        }
+
+        return res;
+    }
+
+    // Perkalian dot vektor/matrix kolom
+    public float vectorDot(Matrix m){
+        float res = 0;
+        for (int i=0;i<rowEff;i++){
+            res += this.mem[i][0] * m.mem[i][0];
+        }
+        return res;
+    }
+
+    // Menghasilkan matrix yang setiap elemennya perkalian dari dua elemen matrix sama dimensi
+    public Matrix multiplyElement(Matrix m){
+        /*
+         * Contoh:
+         *  1 2 3   x   2 2 2  ->  2 4 6
+         *  4 5 6       2 2 2      8 10 12
+         * 
+         */
+        Matrix res = new Matrix(rowEff, colEff);
+        int i=0, j=0;
+        while (i<m.rowEff){
+            j=0;
+            while (j<m.colEff){
+                res.mem[i][j] = m.mem[i][j] * this.mem[i][j];
+                j++;
+            }
+            i++;
+        }
+
+        return res;
+    }
     // OPERASI BARIS ELEMENTER
     // Menukar baris
     public void RowSwap(int row1, int row2) {
