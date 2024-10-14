@@ -30,6 +30,9 @@ public class Matrix {
     // I/O TERMINAL MATRIX  
     // Function to help format float
      public static String formatFloat(float value) {
+        if (value == 0.0f && Float.floatToIntBits(value) == Float.floatToIntBits(-0.0f)) {
+            return "0";
+        }
         if (value == Math.floor(value)) {
             return String.format("%.0f", value);
         } else {
