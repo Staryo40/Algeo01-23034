@@ -6,7 +6,10 @@ public class Determinant {
 
     public static double det(Matrix m){
         if (m.rowEff==m.colEff){
-            return detKofaktor(m);  // Sementara metode Kofaktor
+            Decomposition factoring = new Decomposition(m);
+            factoring.decomposeLUP(m);
+            double det = factoring.computeDeterminant();
+            return det;
         }
         else {
             return 0;               // Undefined behaviour
