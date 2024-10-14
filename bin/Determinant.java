@@ -2,7 +2,7 @@ package bin;
 
 public class Determinant {
     // Toleransi komparasi double
-    static double tol = 0.0001;
+    public static double tol = 0.0001;
 
     public static double det(Matrix m){
         if (m.rowEff==m.colEff){
@@ -57,7 +57,7 @@ public class Determinant {
         int j = 0;
         double sign = 1;
         while (j<m.colEff){
-            if (m.mem[0][j]>Determinant.tol || -Determinant.tol>m.mem[0][j]){
+            if (m.mem[0][j]>tol || -tol>m.mem[0][j]){
                 // Agar jika mendekati nol, tidak perlu komputasi detKofaktor
                 res += sign * m.mem[0][j] * detKofaktor(minor(m, 0, j));
             }
