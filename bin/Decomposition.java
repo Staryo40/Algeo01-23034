@@ -83,4 +83,59 @@ public class Decomposition {
 
         return factors;
     }
+
+    // Menghitung determinan matrix dengan determinan faktornya
+    public double computeDeterminant(){
+        /*
+         * Untuk dekomposisi PA = LU berlaku
+         * det(P)det(A) = det(L)det(U)
+         * det(P) bernilai 1 atau -1
+         * det(L) bernilai 1
+         * det(U) dapat dievaluasi dengan perkalian elemen diagonal
+         * 
+         */
+        det = 1;
+        det *= Determinant.detTriangular(factors[1]);
+        det *= Determinant.detKofaktor(factors[2]);     // 1/(-1)==-1 dan 1/1==1
+        return det;
+    }
+
+    // Mengembalikan determinant tanpa perhitungan
+    public double getDeterminant(){
+        return det;
+    }
+
+    // Solve SPL dengan matrix terfaktor
+    public Matrix solve(Matrix target){
+        /*
+         * Solve LUx = Pb <=> PAx = Pb <=> Ax = b
+         * P : Matrix permutasi
+         * L : Matrix segitiga bawah
+         * U : Matrix segitiga atas
+         * b : vektor target
+         * x : Solusi
+         * 
+         */
+        Matrix Pb = new Matrix(target.rowEff, 1);
+        Matrix y = new Matrix(target.rowEff, 1);
+        Matrix x = new Matrix(target.rowEff, 1);
+        // Komputasi Pb
+        Pb = factors[2].rightMultiply(target);
+        // Solve Ly = Pb dengan forward substitution
+        for (int i=0;i<Pb.rowEff;i++){
+            y.mem[i][0] = Pb.mem[i][0];
+            for (int j=0;j<i;j++){
+                y.mem[i][0] -= factors[0].mem[i][j] * Pb.mem[j][0];
+            }
+        }
+        // Solve Ux = y dengan backward substitution
+        for (int i=y.rowEff-1;i>=0;i--){
+            x.mem[i][0] = y.mem[i][0];
+            for (int j=i+1;j<y.rowEff;j++){
+                x.mem[i][0] -= factors[1].mem[i][j] * y.mem[j][0];
+            }
+            x.mem[i][0] = x.mem[i][0] / factors[1].mem[i][i];
+        }
+        return x;
+    }
 }
