@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Matrix {
     public static final Matrix UNDEFINED = new Matrix(-1, -1);
 
-    public float[][] mem;
+    public double[][] mem;
     public int rowEff;
     public int colEff;
 
@@ -15,7 +15,7 @@ public class Matrix {
         rowEff = nRow;
         colEff = nCol;
         if (rowEff >= 0 && colEff >= 0) {
-            mem = new float[nRow][nCol]; 
+            mem = new double[nRow][nCol]; 
             for (int i = 0; i < nRow; i++){
                 for (int j = 0; j < nCol; j++){
                     mem[i][j] = 0;
@@ -23,13 +23,13 @@ public class Matrix {
             }
         }
         else {
-            mem = new float[0][0];
+            mem = new double[0][0];
         }
     }   
 
     // I/O TERMINAL MATRIX  
-    // Function to help format float
-     public static String formatFloat(float value) {
+    // Function to help format double
+     public static String formatDouble(double value) {
         if (value == Math.floor(value)) {
             return String.format("%.0f", value);
         } else {
@@ -42,7 +42,7 @@ public class Matrix {
         for (int i = 0; i < rowEff; i++){
             for (int j = 0; j < colEff; j++){
 
-                System.out.print(formatFloat((mem[i][j])));
+                System.out.print(formatDouble((mem[i][j])));
 
                 if (j < colEff-1){
                     System.out.print(" ");
@@ -63,7 +63,7 @@ public class Matrix {
         colEff = scanner.nextInt();
         scanner.nextLine();
 
-        mem = new float[rowEff][colEff];
+        mem = new double[rowEff][colEff];
         System.out.println("Enter per baris dengan spasi antar kolom: ");
         for (int i = 0; i < rowEff; i++){
             String inputRow = scanner.nextLine();
@@ -76,7 +76,7 @@ public class Matrix {
             }
 
             for (int j = 0; j < colEff; j++){
-                mem[i][j] = Float.parseFloat(sepRow[j]);
+                mem[i][j] = Double.parseDouble(sepRow[j]);
             }
         }
     }
@@ -104,7 +104,7 @@ public class Matrix {
         // Assigning primitive matrix attributes
         colEff = tempColEff;
         rowEff = tempRowEff;
-        mem = new float[rowEff][colEff];
+        mem = new double[rowEff][colEff];
 
         // Closing and reopening file
         myReader.close();
@@ -118,7 +118,7 @@ public class Matrix {
 
             for (int i = 0; i < colEff; i++){
                 if (i < values.length && !values[i].isEmpty()){
-                    mem[rowCount][i] = Float.parseFloat(values[i]);
+                    mem[rowCount][i] = Double.parseDouble(values[i]);
                 } else {
                     mem[rowCount][i] = 0;
                 }
@@ -253,8 +253,8 @@ public class Matrix {
     }
 
     // Perkalian dot vektor/matrix kolom
-    public float vectorDot(Matrix m){
-        float res = 0;
+    public double vectorDot(Matrix m){
+        double res = 0;
         for (int i=0;i<rowEff;i++){
             res += this.mem[i][0] * m.mem[i][0];
         }
@@ -285,20 +285,20 @@ public class Matrix {
     // OPERASI BARIS ELEMENTER
     // Menukar baris
     public void RowSwap(int row1, int row2) {
-        float[] temp = mem[row1];
+        double[] temp = mem[row1];
         mem[row1] = mem[row2];
         mem[row2] = temp;
     }
 
     // Mengali baris
-    public void RowMultiply(int targetRow, float mult) {
+    public void RowMultiply(int targetRow, double mult) {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] *= mult;
         }
     }
 
     // Menambahkan baris dengan kelipatan baris lain
-    public void RowAddition(int targetRow, int additionRow, float mult) {
+    public void RowAddition(int targetRow, int additionRow, double mult) {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i]; 
         }

@@ -3,7 +3,7 @@ import java.lang.Math;
 
 public class Decomposition {
     public Matrix[] factors;
-    public float det;
+    public double det;
     
     public Decomposition(Matrix m){
         /*
@@ -41,9 +41,9 @@ public class Decomposition {
         factors[2] = m.GetIdentity();
 
         // ELiminasi Gauss dengan partial pivoting
-        float place;
-        float mult;
-        float pivot;
+        double place;
+        double mult;
+        double pivot;
         int pivotIdx;
         for (int j=0;j<m.colEff-1;j++){
             // Cari pivot, dengan nilai absolut tertinggi
