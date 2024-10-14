@@ -1,6 +1,9 @@
 package bin;
 
 public class Determinant {
+    // Toleransi komparasi float
+    static float tol = (float) 0.0001;
+
     public static float det(Matrix m){
         if (m.rowEff==m.colEff){
             return detKofaktor(m);  // Sementara metode Kofaktor
@@ -51,17 +54,21 @@ public class Determinant {
         int j = 0;
         float sign = 1;
         while (j<m.colEff){
-            res += sign * m.mem[0][j] * detKofaktor(minor(m, 0, j));
+            if (m.mem[0][j]>Determinant.tol || -Determinant.tol>m.mem[0][j]){
+                // Agar jika mendekati nol, tidak perlu komputasi detKofaktor
+                res += sign * m.mem[0][j] * detKofaktor(minor(m, 0, j));
+            }
             sign *= -1;
             j++;
         }
         return res;
     }
 
+    // Mengembalikan determinan matriks segitiga
     public static float detTriangular(Matrix m){
         /*
-            Mengembalikan determinan matriks triangular
-        */
+         * Matrix m segitiga atas atau segitiga bawah
+         */
         int i = 0;
         int res = 1;
         while (i<m.rowEff){
