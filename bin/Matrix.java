@@ -28,8 +28,12 @@ public class Matrix {
     }   
 
     // I/O TERMINAL MATRIX  
-    // Function to help format double
-     public static String formatDouble(double value) {
+
+    // Function to help format float
+     public static String formatFloat(float value) {
+        if (value == 0.0f && Double.doubleToLongBits(value) == Double.doubleToLongBits(-0.0f)) {
+            return "0";
+        }
         if (value == Math.floor(value)) {
             return String.format("%.0f", value);
         } else {
@@ -302,6 +306,24 @@ public class Matrix {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i]; 
         }
+    }
+
+    // Prosedur untuk menghapus 1 kolom
+    public void DeleteCol(int colIDX){
+        for (int i = 0; i < rowEff; i++){
+            for (int j = colIDX; j < colEff-1; j++){
+                mem[i][j] = mem[i][j+1];
+            }
+        }
+        colEff--;
+    }
+
+    // Prosedur untuk menghapus 1 row
+    public void DeleteRow(int rowIDX){
+        for (int i = rowIDX; i < rowEff-1; i++){
+            mem[i] = mem[i+1];        
+        }
+        rowEff--;
     }
 }
 

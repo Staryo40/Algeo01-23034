@@ -79,4 +79,14 @@ public class GaussJordan {
 
         return m;
     }
+
+    public static Matrix GetGaussJordanSolution(Matrix m){
+        Matrix res = new Matrix(m.colEff, 1);
+
+        for (int i = 0; i < res.colEff; i++){
+            res.mem[i][0] = m.mem[i][m.rowEff-1];
+        }
+
+        return res;
+    }
 }
