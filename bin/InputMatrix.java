@@ -26,6 +26,16 @@ public class InputMatrix {
         }
     }
 
+    public static class RegressionInput {
+        public Matrix sampleMatrix;
+        public Matrix xMatrix;
+
+        public RegressionInput(Matrix sampleMatrix, Matrix xMatrix) {
+            this.sampleMatrix = sampleMatrix;
+            this.xMatrix = xMatrix;
+        }
+    }
+
     public BicubicInput InputBicubicKeyBoard(){
         // Input: matrix 4x4 dan pada line 5: x dan y yang ingin ditaksir (sesuai input di spesifikasi)
         // Output: matrix (16,1) yang mengandung input dari keyboard user
@@ -209,6 +219,7 @@ public class InputMatrix {
 
         // assigning to matrix
         Matrix rawInput = new Matrix(n,2);
+        System.out.println("Enter per baris dengan spasi antar x dan y: ");
         for (int i = 0; i < n; i++){
             String inputRow = scanner.nextLine();
             String[] sepRow = inputRow.split(" ");
@@ -277,6 +288,122 @@ public class InputMatrix {
             double x = parseDouble(line);
 
             return new InterpolationInput(inputMatrix, x);
+        } else {
+            System.out.println("Error: x not inputted properly.");
+            return null; 
+        }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + e.getMessage());
+            return null; 
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid number format - " + e.getMessage());
+            return null; 
+        }
+    }
+
+    public RegressionInput InputRegressionKeyBoard(){
+        // Input regression dengan pertama menerima n dan m, dan seterusnya menerima matrix dimensi (m, n+1) dengan kolom terakhir berupa y, terakhir adalah input semua nilai x (sebanyak m) untuk taksir y
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Jumlah n (jumlah peubah x): ");
+        int n = scanner.nextInt();
+
+        System.out.print("Jumlah m (jumlah sampel): ");
+        int m = scanner.nextInt();
+        scanner.nextLine();
+
+        Matrix inputMatrix = new Matrix(m, n+1);
+        System.out.println("Enter per baris dengan spasi setiap x dan y sebagai kolom terakhir: ");
+        for (int i = 0; i < m; i++){
+            String inputRow = scanner.nextLine();
+            String[] sepRow = inputRow.split(" ");
+
+            if (sepRow.length != n+1) {
+                System.out.println("Error: Expected " + (n+1) + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
+                i--;
+                continue; 
+            }
+
+            for (int j = 0; j < n+1; j++){
+                inputMatrix.mem[i][j] = parseDouble(sepRow[j]);
+            }
+        }
+
+        Matrix newXMatrix = new Matrix (m,1);
+        System.out.printf("Enter dalam satu baris dengan spasi nilai x (%d buah) untuk taksir x: ", m);
+        System.out.println("");
+        String inputRow = scanner.nextLine();
+        String[] sepRow = inputRow.split(" ");
+        while (sepRow.length != m){
+            System.out.printf("Jumlah x yang diinput tidak sesuai (tidak %d), coba lagi: ", m);
+            inputRow = scanner.nextLine();
+            sepRow = inputRow.split(" ");
+        } 
+        for (int i = 0; i < m; i++){
+            newXMatrix.mem[i][0] = parseDouble(sepRow[i]);
+        }
+        
+        return new RegressionInput(inputMatrix, newXMatrix);
+    }
+
+    public RegressionInput InputRegressionFile (String filename){
+        // Menerima matrix (m, n), m jumlah sampel, n adalah banyak peubah x + 1 dengan kolom terakhir berupa nilai y dan juga menerima nilai x untuk menaksir y baru
+        try {
+        File myObj = new File(filename);
+        Scanner myReader = new Scanner(myObj);
+        
+        int m = 0;
+        int colEff = 0;
+        boolean gotColumn = false;
+       // Counting samples
+        while (myReader.hasNextLine()) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" ");
+            
+            // getting column size from first row
+            if (!gotColumn){
+                colEff = values.length;
+                gotColumn = true;
+            }
+
+            if (values.length == colEff){
+                m++;
+            }
+        }
+
+        // Assigning primitive matrix attributes
+        Matrix inputMatrix = new Matrix(m, colEff);
+
+        // Closing and reopening file
+        myReader.close();
+        myReader = new Scanner(myObj);
+
+        // Assigning values to new array
+        int rowCount = 0;
+        while (rowCount < m) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" "); 
+
+            for (int i = 0; i < colEff; i++){
+                if (i < values.length && !values[i].isEmpty()){
+                    inputMatrix.mem[rowCount][i] = parseDouble(values[i]);
+                } else {
+                    inputMatrix.mem[rowCount][i] = 0;
+                }
+            }
+            rowCount++;
+        }
+
+        Matrix newXMatrix = new Matrix(colEff-1, 1);
+        if (myReader.hasNextLine()){
+            String line = myReader.nextLine();
+            String[] value = line.split(" ");
+            
+            for (int i = 0; i < colEff-1; i++){
+                newXMatrix.mem[i][0] = parseDouble(value[i]);
+            }
+
+            return new RegressionInput(inputMatrix, newXMatrix);
         } else {
             System.out.println("Error: x not inputted properly.");
             return null; 
