@@ -16,7 +16,17 @@ public class InputMatrix {
         }
     }
 
-    public static BicubicInput InputBicubicKeyBoard(){
+    public static class InterpolationInput {
+        public Matrix matrix;
+        public double x;
+
+        public InterpolationInput(Matrix matrix, double x) {
+            this.matrix = matrix;
+            this.x = x;
+        }
+    }
+
+    public BicubicInput InputBicubicKeyBoard(){
         // Input: matrix 4x4 dan pada line 5: x dan y yang ingin ditaksir (sesuai input di spesifikasi)
         // Output: matrix (16,1) yang mengandung input dari keyboard user
         Scanner scanner = new Scanner(System.in);
@@ -53,7 +63,7 @@ public class InputMatrix {
         return new BicubicInput(FinalInput, x, y);
     }
 
-    public static BicubicInput InputBicubicFile(String filename){
+    public BicubicInput InputBicubicFile(String filename){
         // Method to get input for bicubic spline interpolation via file .txt
         try {
         File myObj = new File(filename);
@@ -180,6 +190,97 @@ public class InputMatrix {
             rowCount++;
         }
         return inputMatrix;
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + e.getMessage());
+            return null; 
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid number format - " + e.getMessage());
+            return null; 
+        }
+    }
+
+    public InterpolationInput InputInterpolationKeyBoard(){
+        // Menghasilkan output matrix (n,2) dan juga nilai-nilai x untuk ditaksir dari input keyboard
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Jumlah n (jumlah sampel): ");
+        int n = scanner.nextInt();
+        scanner.nextLine();
+
+        // assigning to matrix
+        Matrix rawInput = new Matrix(n,2);
+        for (int i = 0; i < n; i++){
+            String inputRow = scanner.nextLine();
+            String[] sepRow = inputRow.split(" ");
+
+            if (sepRow.length != 2) {
+                System.out.println("Error: Expected " + 2 + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
+                i--;
+                continue; 
+            }
+
+            for (int j = 0; j < 2; j++){
+                rawInput.mem[i][j] = parseDouble(sepRow[j]);
+            }
+        }
+
+        System.out.print("Input x yang ingin ditaksir: ");
+        String StringInput = scanner.next();
+        double x = parseDouble(StringInput);
+
+        return new InterpolationInput(rawInput, x);
+    }
+
+    public InterpolationInput InputInterpolationFile(String filename){
+        // Menghasilkan output matrix (n,2) dan juga nilai-nilai x untuk ditaksir dari file .txt
+        try {
+        File myObj = new File(filename);
+        Scanner myReader = new Scanner(myObj);
+        
+        int n = 0;
+       // Counting samples
+        while (myReader.hasNextLine()) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" ");
+            
+            if (values.length == 2){
+                n++;
+            }
+        }
+
+        // Assigning primitive matrix attributes
+        Matrix inputMatrix = new Matrix(n, 2);
+
+        // Closing and reopening file
+        myReader.close();
+        myReader = new Scanner(myObj);
+
+        // Assigning values to new array
+        int rowCount = 0;
+        while (rowCount < n) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" "); 
+
+            for (int i = 0; i < 2; i++){
+                if (i < values.length && !values[i].isEmpty()){
+                    inputMatrix.mem[rowCount][i] = parseDouble(values[i]);
+                } else {
+                    inputMatrix.mem[rowCount][i] = 0;
+                }
+            }
+            rowCount++;
+        }
+
+        if (myReader.hasNextLine()){
+            String line = myReader.nextLine();
+            line = line.trim().replaceAll("\\s+", " ");
+            double x = parseDouble(line);
+
+            return new InterpolationInput(inputMatrix, x);
+        } else {
+            System.out.println("Error: x not inputted properly.");
+            return null; 
+        }
 
         } catch (FileNotFoundException e) {
             System.out.println("Error: File not found - " + e.getMessage());
