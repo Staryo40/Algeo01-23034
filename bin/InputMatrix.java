@@ -105,6 +105,92 @@ public class InputMatrix {
         }
     }
 
+    // Function to read matrix via KEYBOARD
+    public Matrix InputMatrixKeyBoard(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Jumlah row: ");
+        int rowEff = scanner.nextInt();
+
+        System.out.print("Jumlah column: ");
+        int colEff = scanner.nextInt();
+        scanner.nextLine();
+
+        Matrix inputMatrix = new Matrix(rowEff, colEff);
+        System.out.println("Enter per baris dengan spasi antar kolom: ");
+        for (int i = 0; i < rowEff; i++){
+            String inputRow = scanner.nextLine();
+            String[] sepRow = inputRow.split(" ");
+
+            if (sepRow.length != colEff) {
+                System.out.println("Error: Expected " + colEff + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
+                i--;
+                continue; 
+            }
+
+            for (int j = 0; j < colEff; j++){
+                inputMatrix.mem[i][j] = parseDouble(sepRow[j]);
+            }
+        }
+
+        return inputMatrix;
+    }
+
+    // Function to read matrix via FILE.TXT
+    public Matrix InputMatrixFile(String filename){
+        try {
+        File myObj = new File(filename);
+        Scanner myReader = new Scanner(myObj);
+        
+        int tempRowEff = 0;
+        int tempColEff = 0;
+
+        // Counting rows and columns first
+        while (myReader.hasNextLine()) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" ");
+            
+            tempRowEff++;
+            if (values.length > tempColEff){
+                tempColEff = values.length;
+            }
+        }
+
+        // Assigning primitive matrix attributes
+        int colEff = tempColEff;
+        int rowEff = tempRowEff;
+        Matrix inputMatrix = new Matrix(rowEff, colEff);
+
+        // Closing and reopening file
+        myReader.close();
+        myReader = new Scanner(myObj);
+
+        // Assigning values to new array
+        int rowCount = 0;
+        while (myReader.hasNextLine()) {
+            String line = myReader.nextLine();
+            String[] values = line.split(" "); 
+
+            for (int i = 0; i < colEff; i++){
+                if (i < values.length && !values[i].isEmpty()){
+                    inputMatrix.mem[rowCount][i] = parseDouble(values[i]);
+                } else {
+                    inputMatrix.mem[rowCount][i] = 0;
+                }
+            }
+            rowCount++;
+        }
+        return inputMatrix;
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + e.getMessage());
+            return null; 
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid number format - " + e.getMessage());
+            return null; 
+        }
+    }
+
+    // HELPER METHODS
     // getDoubleInput helper, replace double comma with dot 
     static private double parseDouble(String value) {
         value = value.replace(',', '.');
