@@ -48,6 +48,28 @@ public class QuadraticRegression {
         return res;
     }
 
+    // Memrediksi menggunakan fungsi regresi yang telah didapatkan
+    public static double predict(Matrix coeffs, Matrix input){
+        Matrix data = new Matrix(1, input.colEff+1);
+        for (int i=0;i<input.colEff;i++){
+            data.mem[0][1+i] = input.mem[0][i];
+        }
+        // coeffs = [a, b,c, d, e, f]
+        Matrix[] vars = getVariables(data);
+        
+        // argument = [1, u, v, u^2, v^2, uv]
+        Matrix argument = new Matrix(1, vars.length);
+        for (int i=0;i<vars.length;i++){
+            argument.mem[0][i] = vars[i].mem[0][0];
+        }
+        argument = argument.GetTranspose();
+
+        // predictedValue = a + bu + cv + du^2 + ev^2 + fuv
+        double predictedValue = coeffs.vectorDot(argument);
+
+        return predictedValue;
+    }
+
     // Mengembalikan matrix model regresi
     public static Matrix getModel(Matrix data){
         int varCount = data.colEff-1;
@@ -98,7 +120,7 @@ public class QuadraticRegression {
         while (i<paramCount){
             j=0;
             while (j<data.rowEff){
-                target.mem[i][0] += vars[i].mem[0][0];
+                target.mem[i][0] += vars[i].mem[j][0];
                 j++;
             }
             i++;
