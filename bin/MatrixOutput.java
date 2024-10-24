@@ -20,6 +20,7 @@ public class MatrixOutput {
                     break;
                 }
                 expectedLeadingOne++;
+                break;
             }
 
             if (leadingZero) break;
@@ -66,8 +67,10 @@ public class MatrixOutput {
             }
             if (m.mem[i][expectedLeadingOne] != 0) {
                 System.out.printf("x%d = %f", (expectedLeadingOne+1), m.mem[i][m.colEff-1]);
-                for (int j = 0; j < m.colEff - 1; j++) {
-                    if (m.mem[i][j] != 0) {
+                for (int j = expectedLeadingOne + 1; j < m.colEff - 1; j++) {
+                    if (m.mem[i][j] < 0) {
+                        System.out.printf(" + %f%c", -m.mem[i][j], parameters[j]);
+                    } else if (m.mem[i][j] > 0) {
                         System.out.printf(" - %f%c", m.mem[i][j], parameters[j]);
                     }
                 }
