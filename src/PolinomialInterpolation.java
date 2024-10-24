@@ -26,7 +26,7 @@ public class PolinomialInterpolation {
         return a;
     }
 
-    public static double GetEstimate(Matrix a, int x) {
+    public static double GetEstimate(Matrix a, double x) {
         double currentX = 1;
         double total = 0;
         for (int i = 0; i < a.rowEff; i++) {
@@ -40,9 +40,9 @@ public class PolinomialInterpolation {
         System.out.printf("p%d(x) = %s ", a.rowEff-1, Matrix.formatDouble(a.mem[0][0]));
         for (int i = 1; i < a.rowEff; i++) {
             if (a.mem[i][0] > 0) {
-                System.out.printf(" + %s", Matrix.formatDouble(a.mem[i][0]));
+                System.out.printf(" + %sx^%d", Matrix.formatDouble(a.mem[i][0]), i);
             } else if (a.mem[i][0] < 0) {
-                System.out.printf(" - %s", Matrix.formatDouble(-a.mem[i][0]));
+                System.out.printf(" - %sx^%d", Matrix.formatDouble(-a.mem[i][0]), i);
             }
         }
     }
