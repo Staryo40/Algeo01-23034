@@ -82,6 +82,17 @@ public class Matrix {
         return newMatrix;
     }
 
+    // Fungsi yang mengembalikan transpose matrix
+    public Matrix GetTranspose(){
+        Matrix res = new Matrix(colEff, rowEff);
+        for (int i=0;i<rowEff;i++){
+            for (int j=0;j<colEff;j++){
+                res.mem[j][i] = this.mem[i][j];
+            }
+        }
+        return res;
+    }
+
     // Invers dari matrix dengan Gauss-Jordan
     public Matrix GetInverse() {
         return Inverse.inverse(this);
