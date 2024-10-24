@@ -2,7 +2,7 @@ package bin;
 
 public class Determinant {
     // Toleransi komparasi double
-    public static double tol = 0.0001;
+    static double tol = 0.0001;
 
     // Menghitung determinan dengan dekomposisi LUP
     public static double det(Matrix m){
