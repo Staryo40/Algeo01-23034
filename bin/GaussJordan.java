@@ -80,13 +80,16 @@ public class GaussJordan {
         return m;
     }
 
-    public static Matrix GetGaussJordanSolution(Matrix m){
-        Matrix res = new Matrix(m.colEff, 1);
+    public static Matrix GetGaussJordanSolution(Matrix A, Matrix b){
+        Matrix res;
+        res = A.Augment(b);
+        res = GaussJordanElimination(res);
 
-        for (int i = 0; i < res.colEff; i++){
-            res.mem[i][0] = m.mem[i][m.rowEff-1];
+        if (res.GetSubMatrix(0, 0, A.rowEff, A.colEff).IsEqualTo(A.GetIdentity())){
+            return res.GetSubMatrix(0, A.colEff, A.rowEff, 1);
         }
-
-        return res;
+        else {
+            return Matrix.UNDEFINED;
+        }
     }
 }
