@@ -1,5 +1,4 @@
-package bin;
-
+package src;
 
 public class LinearRegression {
    public static Matrix Regression(Matrix m){

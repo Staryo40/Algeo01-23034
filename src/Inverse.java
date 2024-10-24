@@ -1,4 +1,5 @@
-package bin;
+package src;
+
 public class Inverse {
 
     public static Matrix inverse(Matrix m){

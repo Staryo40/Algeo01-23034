@@ -1,4 +1,4 @@
-package bin;
+package src;
 
 public class QuadraticRegression {
     // Mengembalikan parameter regresi kuadrat multivariat

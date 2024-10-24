@@ -329,12 +329,14 @@ public class MatrixRunner{
             case 2 -> {
                 // Quadratic interpolation
                 System.out.println("The coefficients from multiple linear regression are:");
-                Matrix resConstant = LinearRegression.Regression(sampleMatrix);
+                sampleMatrix = sampleMatrix.Augment(sampleMatrix.GetSubMatrix(0, 0, sampleMatrix.rowEff, 1));
+                sampleMatrix.DeleteCol(0);
+                Matrix resConstant = QuadraticRegression.regress(sampleMatrix);
                 for (int i = 0; i < resConstant.rowEff; i++){
                     System.out.printf("a%d: %.2f", i, resConstant.mem[i][0]);
                 }
                 System.out.println("");
-                System.out.printf("So result of linear regression with x values provided is = %.2f", LinearRegression.Solve(sampleMatrix, xEstimation));
+                System.out.printf("So result of linear regression with x values provided is = %.2f", QuadraticRegression.predict(resConstant, xEstimation.GetTranspose()));
                 System.out.println(""); 
             }
         }

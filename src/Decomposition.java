@@ -1,4 +1,4 @@
-package bin;
+package src;
 import java.lang.Math;
 
 public class Decomposition {
