@@ -5,12 +5,10 @@ public class LinearRegression {
    public static Matrix Regression(Matrix m){
       /* Input: m adalah matriks dengan kolom terakhirnya berupa y sampel dan kolom lainnya adalah nilai x0, x1, ..., xn yang menghasilkan y 
          Output: vektor model parameter yang berisi beta0, beta1, ..., betaN */
-      Matrix parameterMatrix = new Matrix(0,0);
-      parameterMatrix = AugmentOnesCol(m, 0);
+      Matrix parameterMatrix = AugmentOnesCol(m, 0);
       parameterMatrix = GaussJordan.GaussJordanElimination(parameterMatrix);
 
-      Matrix modelParameter = new Matrix(0,0);
-      modelParameter = parameterMatrix.GetSubMatrix(0, parameterMatrix.colEff-1, parameterMatrix.rowEff, 1);
+      Matrix modelParameter = parameterMatrix.GetSubMatrix(0, parameterMatrix.colEff-1, parameterMatrix.rowEff, 1);
 
       return modelParameter;
    } 
