@@ -35,4 +35,15 @@ public class PolinomialInterpolation {
         }
         return total;
     }
+
+    public static void PrintPolinomialInterpolation(Matrix a) {
+        System.out.printf("p%d(x) = %s ", a.rowEff-1, Matrix.formatDouble(a.mem[0][0]));
+        for (int i = 1; i < a.rowEff; i++) {
+            if (a.mem[i][0] > 0) {
+                System.out.printf(" + %s", Matrix.formatDouble(a.mem[i][0]));
+            } else if (a.mem[i][0] < 0) {
+                System.out.printf(" - %s", Matrix.formatDouble(-a.mem[i][0]));
+            }
+        }
+    }
 }
