@@ -2,6 +2,7 @@ package bin;
 
 public class PolinomialInterpolation {
     public static Matrix GetPolinomialInterpolation(Matrix m){
+
         Matrix x = new Matrix(m.rowEff, m.rowEff);
 
         for (int i = 0; i < x.colEff; i++) {
@@ -15,18 +16,21 @@ public class PolinomialInterpolation {
         
         Matrix y = new Matrix(m.rowEff, 1);
 
+
         for (int i = 0; i < y.rowEff; i++) {
-            y.mem[i][1] = m.mem[i][1];
+            y.mem[i][0] = m.mem[i][1];
         }
 
         Matrix augmented = x.Augment(y);
 
-        Matrix a = GaussJordan.GaussJordanElimination(augmented).GetSubMatrix(0, augmented.colEff-1, augmented.rowEff, 1);
+        Matrix a = GaussJordan.GaussJordanElimination(augmented);
+        
+        a = a.GetSubMatrix(0, augmented.colEff-1, augmented.rowEff, 1);
 
         return a;
     }
 
-    public static double GetEstimate(Matrix a, int x) {
+    public static double GetEstimate(Matrix a, double x) {
         double currentX = 1;
         double total = 0;
         for (int i = 0; i < a.rowEff; i++) {
@@ -40,9 +44,9 @@ public class PolinomialInterpolation {
         System.out.printf("p%d(x) = %s ", a.rowEff-1, Matrix.formatDouble(a.mem[0][0]));
         for (int i = 1; i < a.rowEff; i++) {
             if (a.mem[i][0] > 0) {
-                System.out.printf(" + %s", Matrix.formatDouble(a.mem[i][0]));
+                System.out.printf(" + %sx^%d", Matrix.formatDouble(a.mem[i][0]), i);
             } else if (a.mem[i][0] < 0) {
-                System.out.printf(" - %s", Matrix.formatDouble(-a.mem[i][0]));
+                System.out.printf(" - %sx^%d", Matrix.formatDouble(-a.mem[i][0]), i);
             }
         }
     }
