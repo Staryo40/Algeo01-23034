@@ -30,18 +30,22 @@ public class QuadraticRegression {
         // Jumlah parameter untuk seluruh variabel konstan, linear, kuadrat, dan interaksi
         int paramCount = 1 + varCount + varCount + varCount*(varCount-1)/2;
         
+
         // Matrix paramCount x 1 
         Matrix target = new Matrix(paramCount, 1);
-        target = getTarget(data, varCount, paramCount);
+        target = getTarget(data);
+
         // Matrix pemodelan regresi paramCount x paramCount
         Matrix model = new Matrix(paramCount, paramCount);
-        model = getModel(data, varCount, paramCount);
+        model = getModel(data);
+
         // Invers matrix pemodelan
         Matrix inverseModel = new Matrix(paramCount, paramCount);
         inverseModel = model.GetInverse();
         
+        
         // Ax=b ==> x=inverse(A)b 
-        Matrix res = new Matrix(1, paramCount);
+        Matrix res = new Matrix(paramCount, 1);
         if (!inverseModel.IsEqualTo(Matrix.UNDEFINED)){
             res = inverseModel.rightMultiply(target);
         }
@@ -54,9 +58,13 @@ public class QuadraticRegression {
     }
 
     // Mengembalikan matrix model regresi
-    public static Matrix getModel(Matrix data, int varCount, int paramCount){
+    public static Matrix getModel(Matrix data){
+        int varCount = data.colEff-1;
+        // Jumlah parameter untuk seluruh variabel konstan, linear, kuadrat, dan interaksi
+        int paramCount = 1 + varCount + varCount + varCount*(varCount-1)/2;
+
         Matrix[] vars = new Matrix[paramCount];
-        vars = getVariables(data, varCount, paramCount);
+        vars = getVariables(data);
 
         Matrix model = new Matrix(paramCount, paramCount);
         int i=0, j=0;
@@ -80,9 +88,13 @@ public class QuadraticRegression {
     }
 
     // Mengembalikan matrix kolom target regresi
-    public static Matrix getTarget(Matrix data, int varCount, int paramCount){
+    public static Matrix getTarget(Matrix data){
+        int varCount = data.colEff-1;
+        // Jumlah parameter untuk seluruh variabel konstan, linear, kuadrat, dan interaksi
+        int paramCount = 1 + varCount + varCount + varCount*(varCount-1)/2;
+
         Matrix[] vars = new Matrix[paramCount];
-        vars = getVariables(data, varCount, paramCount);
+        vars = getVariables(data);
         int i=0;
         while (i<paramCount){
             vars[i] = data.GetSubMatrix(0, 0, data.rowEff, 1).multiplyElement(vars[i]);
@@ -104,13 +116,18 @@ public class QuadraticRegression {
     }
 
     // Mengembalikan array matrix kolom setiap variabel
-    public static Matrix[] getVariables(Matrix data, int varCount, int paramCount){
+    public static Matrix[] getVariables(Matrix data){
         /*
          * vars[0] : Matrix kolom berisi nilai 1
          * vars[1..varCount] : Matrix kolom berisi nilai variabel linear
          * vars[varCount+1..2*varCount] : Matrix kolom berisi nilai variabel kuadrat
          * vars[1+2*varCount..paramCount-1] : Matrix kolom berisi nilai variabel interaksi
          */
+        int varCount = data.colEff-1;
+        // Jumlah parameter untuk seluruh variabel konstan, linear, kuadrat, dan interaksi
+        int paramCount = 1 + varCount + varCount + varCount*(varCount-1)/2;
+
+
         Matrix[] vars = new Matrix[paramCount];
         for (int k=0;k<paramCount;k++){
             vars[k] = new Matrix(data.rowEff, 1);
