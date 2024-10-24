@@ -4,11 +4,21 @@ public class Determinant {
     // Toleransi komparasi double
     public static double tol = 0.0001;
 
+    // Menghitung determinan dengan dekomposisi LUP
     public static double det(Matrix m){
         if (m.rowEff==m.colEff){
-            Decomposition factoring = new Decomposition(m);
-            factoring.decomposeLUP(m);
-            double det = factoring.computeDeterminant();
+            /*
+             * Untuk dekomposisi PA = LU berlaku
+             * det(P)det(A) = det(L)det(U)
+             * det(P) bernilai 1 atau -1
+             * det(L) bernilai 1
+             * det(U) dapat dievaluasi dengan perkalian elemen diagonal
+             */
+            Decomposition factors = new Decomposition();
+            factors.decomposeLUP(m);
+            double det = 1;
+            det *= Determinant.detTriangular(factors.U);
+            det *= Determinant.detKofaktor(factors.P);      // Division by 1 or -1
             return det;
         }
         else {
