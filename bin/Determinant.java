@@ -2,7 +2,7 @@ package bin;
 
 public class Determinant {
     // Toleransi komparasi double
-    public static double tol = 0.0001;
+    static double tol = 0.0001;
 
     public static double det(Matrix m){
         if (m.rowEff==m.colEff){

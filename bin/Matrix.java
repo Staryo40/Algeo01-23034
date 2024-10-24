@@ -1,7 +1,4 @@
 package bin;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class Matrix {
     public static final Matrix UNDEFINED = new Matrix(-1, -1);
@@ -30,10 +27,13 @@ public class Matrix {
     // I/O TERMINAL MATRIX  
     // Function to help format double
      public static String formatDouble(double value) {
+        if (value == 0.0f && Double.doubleToLongBits(value) == Double.doubleToLongBits(-0.0f)) {
+            return "0";
+        }
         if (value == Math.floor(value)) {
             return String.format("%.0f", value);
         } else {
-            return String.format("%.1f", value);
+            return String.format("%.2f", value).replace(",", ".");
         }
     }
 
@@ -50,89 +50,6 @@ public class Matrix {
 
             }
             System.out.println();
-        }
-    }
-
-    // Function to read matrix via KEYBOARD
-    public void readMatrixKeyBoard(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Jumlah row: ");
-        rowEff = scanner.nextInt();
-
-        System.out.print("Jumlah column: ");
-        colEff = scanner.nextInt();
-        scanner.nextLine();
-
-        mem = new double[rowEff][colEff];
-        System.out.println("Enter per baris dengan spasi antar kolom: ");
-        for (int i = 0; i < rowEff; i++){
-            String inputRow = scanner.nextLine();
-            String[] sepRow = inputRow.split(" ");
-
-            if (sepRow.length != colEff) {
-                System.out.println("Error: Expected " + colEff + " columns, but received " + sepRow.length + "." + " FOKUS BUNG/NONA!");
-                i--;
-                continue; 
-            }
-
-            for (int j = 0; j < colEff; j++){
-                mem[i][j] = Double.parseDouble(sepRow[j]);
-            }
-        }
-    }
-
-    // Function to read matrix via FILE.TXT
-    public void readMatrixFile(String filename){
-        try {
-        File myObj = new File(filename);
-        Scanner myReader = new Scanner(myObj);
-        
-        int tempRowEff = 0;
-        int tempColEff = 0;
-
-        // Counting rows and columns first
-        while (myReader.hasNextLine()) {
-            String line = myReader.nextLine();
-            String[] values = line.split(" ");
-            
-            tempRowEff++;
-            if (values.length > tempColEff){
-                tempColEff = values.length;
-            }
-        }
-
-        // Assigning primitive matrix attributes
-        colEff = tempColEff;
-        rowEff = tempRowEff;
-        mem = new double[rowEff][colEff];
-
-        // Closing and reopening file
-        myReader.close();
-        myReader = new Scanner(myObj);
-
-        // Assigning values to new array
-        int rowCount = 0;
-        while (myReader.hasNextLine()) {
-            String line = myReader.nextLine();
-            String[] values = line.split(" "); 
-
-            for (int i = 0; i < colEff; i++){
-                if (i < values.length && !values[i].isEmpty()){
-                    mem[rowCount][i] = Double.parseDouble(values[i]);
-                } else {
-                    mem[rowCount][i] = 0;
-                }
-            }
-            rowCount++;
-        }
-        myReader.close();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("Error parsing numbers.");
-            e.printStackTrace();
         }
     }
 
@@ -212,7 +129,7 @@ public class Matrix {
             return Matrix.UNDEFINED;
         }
 
-        int row1=0, joint=0, col2=0;
+        int row1=0, joint, col2;
         while (row1<this.rowEff){
             col2 = 0;
             while (col2<m.colEff){
@@ -235,7 +152,7 @@ public class Matrix {
             return Matrix.UNDEFINED;
         }
 
-        int row1=0, joint=0, col2=0;
+        int row1=0, joint, col2;
         while (row1<m.rowEff){
             col2 = 0;
             while (col2<this.colEff){
@@ -270,7 +187,7 @@ public class Matrix {
          * 
          */
         Matrix res = new Matrix(rowEff, colEff);
-        int i=0, j=0;
+        int i=0, j;
         while (i<m.rowEff){
             j=0;
             while (j<m.colEff){
@@ -302,6 +219,24 @@ public class Matrix {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i]; 
         }
+    }
+
+    // Prosedur untuk menghapus 1 kolom
+    public void DeleteCol(int colIDX){
+        for (int i = 0; i < rowEff; i++){
+            for (int j = colIDX; j < colEff-1; j++){
+                mem[i][j] = mem[i][j+1];
+            }
+        }
+        colEff--;
+    }
+
+    // Prosedur untuk menghapus 1 row
+    public void DeleteRow(int rowIDX){
+        for (int i = rowIDX; i < rowEff-1; i++){
+            mem[i] = mem[i+1];        
+        }
+        rowEff--;
     }
 }
 
