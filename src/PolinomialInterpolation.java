@@ -1,4 +1,4 @@
-package bin;
+package src;
 
 public class PolinomialInterpolation {
     public static Matrix GetPolinomialInterpolation(Matrix m){

@@ -1,4 +1,4 @@
-package bin;
+package src;
 
 public class Matrix {
     public static final Matrix UNDEFINED = new Matrix(-1, -1);
