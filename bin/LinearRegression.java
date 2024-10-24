@@ -10,38 +10,42 @@ public class LinearRegression {
       parameterMatrix = GaussJordan.GaussJordanElimination(parameterMatrix);
 
       Matrix modelParameter = new Matrix(0,0);
-      modelParameter = GaussJordan.GetGaussJordanSolution(parameterMatrix);
+      modelParameter = parameterMatrix.GetSubMatrix(0, parameterMatrix.colEff-1, parameterMatrix.rowEff, 1);
 
       return modelParameter;
    } 
 
    public static Matrix AugmentOnesCol(Matrix m, int colIdx){
       // Menghasilkan matrix dengan tambahan satu kolom berisi semua 1 pada colIdx
-      Matrix res = new Matrix(m.rowEff, m.colEff+1);
-      int mCol = 0, mRow = 0;
+      Matrix res = new Matrix(m.rowEff, m.colEff + 1);  // Create a new matrix with one additional column
+      int mCol;
 
-      for (int i = 0; i < res.rowEff; i++){
-         for (int j = 0; j < res.colEff; j++){
-               res.mem[i][j] = (j == colIdx) ? 1 : m.mem[mRow][mCol];
-               if (j != colIdx){
-                  mCol++;
+      // Loop through each row of the original matrix
+      for (int i = 0; i < res.rowEff; i++) {
+         mCol = 0; // Reset the column index of the original matrix
+         for (int j = 0; j < res.colEff; j++) {
+               if (j == colIdx) {
+                  res.mem[i][j] = 1; // Insert 1 at the colIdx position
+               } else {
+                  res.mem[i][j] = m.mem[i][mCol]; // Copy the original matrix values
+                  mCol++; // Move to the next column of the original matrix
                }
          }
-         mRow++;
       }
 
       return res;
    }
 
-   public static float Solve(Matrix sample, Matrix problem){
+   public static double Solve(Matrix sample, Matrix problem){
       /* "sample" adalah matriks dengan kolom terakhirnya berupa y sampel dan kolom lainnya adalah nilai x1, x2, ..., xn yang menghasilkan y 
          "problem" adalah matriks dimensi (1, n) yang berisi nilai x1, x2, ..., xn yang ingin dihitung untuk memperoleh y dari model regresi linier
-         Note: regSolution berdimensi (n, 1), sedangkan problem (1,n) */
+         Note: regSolution berdimensi (n, 1), sedangkan problem (n,1) */
       Matrix regSolution = Regression(sample);
-      float solution = regSolution.mem[0][0];
-      regSolution.DeleteRow(0);
-      for (int i = 0; i < problem.colEff; i++){
-         solution += regSolution.mem[i][0] * problem.mem[0][i];
+      double solution = regSolution.mem[0][0];
+      int probId = 0;
+      for (int i = 1; i < regSolution.rowEff; i++){
+         solution += regSolution.mem[i][0] * problem.mem[probId][0];
+         probId++;
       }
 
       return solution;
