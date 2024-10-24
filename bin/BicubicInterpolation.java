@@ -81,9 +81,10 @@ public class BicubicInterpolation {
 
         // output berupa konstanta a00 hingga a33 dalam bentuk matrix (16,1)
         Matrix augmentedX = X.Augment(f);
-        augmentedX.printMatrix();
+        // augmentedX.printMatrix();
         Matrix resMatrix = GaussJordan.GaussJordanElimination(augmentedX);
-        Matrix res = resMatrix.GetSubMatrix(0, 0, 16, 1);
+        Matrix res = resMatrix.GetSubMatrix(0, 16, 16, 1);
+        // res.printMatrix();
         return res;
     }
 
