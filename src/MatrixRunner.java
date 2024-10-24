@@ -9,6 +9,7 @@ import bin.Inverse;
 import bin.LinearRegression;
 import bin.Matrix;
 import bin.MatrixOutput;
+import bin.PolinomialInterpolation;
 
 public class MatrixRunner{
     public static void clearScreen() {
@@ -175,6 +176,7 @@ public class MatrixRunner{
         }
         InputMatrix input = new InputMatrix();
         Matrix inputMatrix = new Matrix(0,0);
+        clearScreen();
         if (userChoice == 1){
             inputMatrix = input.InputMatrixKeyBoard();
         } else if (userChoice == 2){
@@ -232,6 +234,7 @@ public class MatrixRunner{
             System.out.print("T'was not a valid choice, try again: ");
             userChoice = scanner.nextInt();
         }
+        clearScreen();
         InputMatrix input = new InputMatrix();
         Matrix inputMatrix = new Matrix(0,0);
         if (userChoice == 1){
@@ -296,6 +299,7 @@ public class MatrixRunner{
             System.out.print("T'was not a valid choice, try again: ");
             userChoice = scanner.nextInt();
         }
+        clearScreen();
         InputMatrix input = new InputMatrix();
         Matrix placeMat = new Matrix(0,0);
         InputMatrix.RegressionInput regressionInput = new InputMatrix.RegressionInput(placeMat, placeMat);
@@ -315,6 +319,7 @@ public class MatrixRunner{
                 Matrix resConstant = LinearRegression.Regression(sampleMatrix);
                 for (int i = 0; i < resConstant.rowEff; i++){
                     System.out.printf("a%d: %.2f", i, resConstant.mem[i][0]);
+                    System.out.println("");
                 }
                 System.out.println("");
                 System.out.printf("So result of linear regression with x values provided is = %.2f", LinearRegression.Solve(sampleMatrix, xEstimation));
@@ -335,6 +340,44 @@ public class MatrixRunner{
         }
     }
 
+    public static void SolveInterpolation(){
+        String menu = """
+        Choose how you'll input x and y samples and also the x that will be estimated:
+        1. Keyboard Input
+        2. File
+        """;
+        System.out.println(menu);
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your preferred method: ");
+        int userChoice = scanner.nextInt();
+        while (userChoice < 0 || userChoice > 2){
+            System.out.print("T'was not a valid choice, try again: ");
+            userChoice = scanner.nextInt();
+        }
+        clearScreen();
+        InputMatrix input = new InputMatrix();
+        
+        Matrix place = new Matrix(0,0);
+        double placex = 0;
+        InputMatrix.InterpolationInput inputInterpolation = new InputMatrix.InterpolationInput(place, placex);
+
+        if (userChoice == 1){
+            inputInterpolation = input.InputInterpolationKeyBoard();
+        } else if (userChoice == 2){
+            System.out.print("Enter your preferred filename with (.txt) and put the text file in directory 'test': ");
+            String filename = scanner.next();
+            inputInterpolation = input.InputInterpolationFile("test/" + filename);
+        }
+        Matrix sampleMatrix = inputInterpolation.matrix;
+        double x = inputInterpolation.x;
+        System.out.println("The polynomial equation is: ");
+        PolinomialInterpolation.PrintPolinomialInterpolation(sampleMatrix);
+        System.out.println("");
+        System.out.print("The polynomial equation is: ");
+        System.out.printf("%.2f", PolinomialInterpolation.GetEstimate(sampleMatrix, x));
+        System.out.println("");
+    }
+
     public static void SolveBicubic(){
         String menu = """
         Choose how you'll input the 4x4 matrix:
@@ -349,6 +392,7 @@ public class MatrixRunner{
             System.out.print("T'was not a valid choice, try again: ");
             userChoice = scanner.nextInt();
         }
+        clearScreen();
         InputMatrix input = new InputMatrix();
         
         Matrix place = new Matrix(0,0);
@@ -366,12 +410,12 @@ public class MatrixRunner{
         Matrix fValues = inputBicubic.matrix;
         double x = inputBicubic.x;
         double y = inputBicubic.y;
-        clearScreen();
         System.out.println("The coefficients from bicubic spline interpolation are: ");
         Matrix xMatrix = BicubicInterpolation.MatrixX();
         Matrix BicubicConstants = BicubicInterpolation.InterpolationConstant(xMatrix, fValues);
         for (int i = 0; i < BicubicConstants.rowEff; i++){
             System.out.printf("x%d: %.2f", i, BicubicConstants.mem[i][0]);
+            System.out.println("");
         }
         System.out.println("");
         System.out.printf("So P(%.2f, %.2f) = %.2f", x, y, BicubicInterpolation.InterpolationSolve(BicubicConstants, x, y));
@@ -383,6 +427,7 @@ public class MatrixRunner{
         String input;
         
         while (true) { // Infinite loop until a valid input is received
+            System.out.println("");
             System.out.print("Do you want to continue? (y/n): ");
             input = scanner.nextLine().trim().toLowerCase();
             
@@ -391,6 +436,7 @@ public class MatrixRunner{
             } else if (input.equals("n")) {
                 return false; 
             } else {
+                System.out.println("");
                 System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
             }
         }
@@ -430,6 +476,7 @@ public class MatrixRunner{
                 }
                 case 3 -> {
                     int inverseChoice = InverseChoice();
+                    clearScreen();
                     switch(inverseChoice){
                         case 1 -> SolveInverse(1);
                         case 2 -> SolveInverse(2);
@@ -438,9 +485,19 @@ public class MatrixRunner{
                         }
                     }
                 }
-                // case 4 -> PolinomialMenu();
+                case 4 -> SolveInterpolation();
                 case 5 -> SolveBicubic();
-                case 6 -> RegressionChoice();
+                case 6 -> {
+                    int regressionChoice = RegressionChoice();
+                    clearScreen();
+                    switch (regressionChoice){
+                        case 1 -> SolveRegression(1);
+                        case 2 -> SolveRegression(2);
+                        case 3 -> {
+                            continue;
+                        }
+                    }
+                }
                 case 7 -> {
                     System.out.println("Exiting the program. Goodbye!");
                     running = false;
