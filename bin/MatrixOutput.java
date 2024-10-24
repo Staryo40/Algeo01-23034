@@ -59,6 +59,10 @@ public class MatrixOutput {
                 expectedLeadingOne++;
             }
         }
+        for (int i = expectedLeadingOne; i < m.colEff - 1; i++) {
+            parameters[i] = currentParameter;
+            currentParameter = (char) (((int) currentParameter - 96) % 26 + 97);
+        }
 
         expectedLeadingOne = 0;
         for (int i = 0; i < m.rowEff; i++) {
@@ -66,14 +70,21 @@ public class MatrixOutput {
                 break;
             }
             if (m.mem[i][expectedLeadingOne] != 0) {
-                System.out.printf("x%d = %f", (expectedLeadingOne+1), m.mem[i][m.colEff-1]);
+                System.out.printf("x%d = ", (expectedLeadingOne+1));
+                if (m.mem[i][m.colEff-1] != 0)
+                    System.out.printf("%s", Matrix.formatDouble(m.mem[i][m.colEff-1]));
+                boolean HasParameter = false;
                 for (int j = expectedLeadingOne + 1; j < m.colEff - 1; j++) {
                     if (m.mem[i][j] < 0) {
-                        System.out.printf(" + %f%c", -m.mem[i][j], parameters[j]);
+                        System.out.printf(" + %s%c", Matrix.formatDouble(-m.mem[i][j]), parameters[j]);
+                        HasParameter = true;
                     } else if (m.mem[i][j] > 0) {
-                        System.out.printf(" - %f%c", m.mem[i][j], parameters[j]);
+                        System.out.printf(" - %s%c", Matrix.formatDouble(m.mem[i][j]), parameters[j]);
+                        HasParameter = true;
                     }
                 }
+                if (!HasParameter)
+                    System.out.print("0");
                 System.out.println("");
                 expectedLeadingOne++;
             } else {
