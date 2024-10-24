@@ -19,4 +19,29 @@ public class Inverse {
         }
     }
 
+    // Invers dari matrix dengan matriks adjunct
+    public static Matrix inverseAdj(Matrix m){
+        Matrix res = new Matrix(m.colEff, m.rowEff);
+        // Bentuk matriks kofaktor (C)
+        for(int i=0;i<m.rowEff;i++){
+            for (int j=0;j<m.colEff;j++){
+                res.mem[i][j] = Math.pow(-1, i+j) * Determinant.det(Determinant.minor(m, i, j));
+            }
+        }
+
+        // adj(A) = transpose(C)
+        res = res.GetTranspose();
+
+        // Kalikan dengan 1/det(m)
+        double det = Determinant.det(m);
+        for(int i=0;i<m.rowEff;i++){
+            for (int j=0;j<m.colEff;j++){
+                res.mem[i][j] = (1/det)*res.mem[i][j];
+            }
+        } 
+
+        return res;
+    }
+
+    
 }
