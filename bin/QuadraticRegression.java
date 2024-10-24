@@ -38,23 +38,36 @@ public class QuadraticRegression {
         // Matrix pemodelan regresi paramCount x paramCount
         Matrix model = new Matrix(paramCount, paramCount);
         model = getModel(data);
-
-        // Invers matrix pemodelan
-        Matrix inverseModel = new Matrix(paramCount, paramCount);
-        inverseModel = model.GetInverse();
         
-        
-        // Ax=b ==> x=inverse(A)b 
-        Matrix res = new Matrix(paramCount, 1);
-        if (!inverseModel.IsEqualTo(Matrix.UNDEFINED)){
-            res = inverseModel.rightMultiply(target);
-        }
-        else {
-            System.out.println("Regression failed");
-            res = Matrix.UNDEFINED;
-        }
+        // Solve Ax = b
+        Matrix res;
+        res = model.Augment(target);
+        res = GaussJordan.GaussJordanElimination(res);
+        res = res.GetSubMatrix(0, res.colEff-1, res.rowEff, 1);
 
         return res;
+    }
+
+    // Memrediksi menggunakan fungsi regresi yang telah didapatkan
+    public static double predict(Matrix coeffs, Matrix input){
+        Matrix data = new Matrix(1, input.colEff+1);
+        for (int i=0;i<input.colEff;i++){
+            data.mem[0][1+i] = input.mem[0][i];
+        }
+        // coeffs = [a, b,c, d, e, f]
+        Matrix[] vars = getVariables(data);
+        
+        // argument = [1, u, v, u^2, v^2, uv]
+        Matrix argument = new Matrix(1, vars.length);
+        for (int i=0;i<vars.length;i++){
+            argument.mem[0][i] = vars[i].mem[0][0];
+        }
+        argument = argument.GetTranspose();
+
+        // predictedValue = a + bu + cv + du^2 + ev^2 + fuv
+        double predictedValue = coeffs.vectorDot(argument);
+
+        return predictedValue;
     }
 
     // Mengembalikan matrix model regresi
@@ -107,7 +120,7 @@ public class QuadraticRegression {
         while (i<paramCount){
             j=0;
             while (j<data.rowEff){
-                target.mem[i][0] += vars[i].mem[0][0];
+                target.mem[i][0] += vars[i].mem[j][0];
                 j++;
             }
             i++;
