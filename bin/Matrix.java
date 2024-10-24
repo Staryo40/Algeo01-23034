@@ -84,16 +84,7 @@ public class Matrix {
 
     // Invers dari matrix dengan Gauss-Jordan
     public Matrix GetInverse() {
-        Matrix augmentedMatrix = this.Augment(this.GetIdentity());
-        augmentedMatrix = GaussJordan.GaussJordanElimination(augmentedMatrix);
-        Matrix supposedIdentity = augmentedMatrix.GetSubMatrix(0, 0, this.rowEff, this.colEff);
-
-        if (supposedIdentity.IsEqualTo(supposedIdentity.GetIdentity())) {
-            return augmentedMatrix.GetSubMatrix(0, this.colEff, this.rowEff, this.colEff);
-        }
-        else {
-            return Matrix.UNDEFINED;
-        }
+        return Inverse.inverse(this);
     }
 
     // Fungsi yang mengembalikan hasil augment matrix self ke matrix m
