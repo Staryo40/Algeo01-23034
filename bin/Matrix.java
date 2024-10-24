@@ -30,10 +30,16 @@ public class Matrix {
         if (value == 0.0f && Double.doubleToLongBits(value) == Double.doubleToLongBits(-0.0f)) {
             return "0";
         }
-        if (value == Math.floor(value)) {
+        if (value == 0){
+            return String.format("%.0f", value);
+        } else if (Math.abs(value) < 0.01) {
+            return String.format("%.2e", value);
+        } else if (Math.abs(value) > 100000){
+            return String.format("%.2e", value);
+        } else if (value == Math.floor(value)) {
             return String.format("%.0f", value);
         } else {
-            return String.format("%.2f", value).replace(",", ".");
+            return String.format("%.4f", value).replace(",", ".");
         }
     }
 
