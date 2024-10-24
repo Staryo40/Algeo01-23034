@@ -38,21 +38,12 @@ public class QuadraticRegression {
         // Matrix pemodelan regresi paramCount x paramCount
         Matrix model = new Matrix(paramCount, paramCount);
         model = getModel(data);
-
-        // Invers matrix pemodelan
-        Matrix inverseModel = new Matrix(paramCount, paramCount);
-        inverseModel = model.GetInverse();
         
-        
-        // Ax=b ==> x=inverse(A)b 
-        Matrix res = new Matrix(paramCount, 1);
-        if (!inverseModel.IsEqualTo(Matrix.UNDEFINED)){
-            res = inverseModel.rightMultiply(target);
-        }
-        else {
-            System.out.println("Regression failed");
-            res = Matrix.UNDEFINED;
-        }
+        // Solve Ax = b
+        Matrix res;
+        res = model.Augment(target);
+        res = GaussJordan.GaussJordanElimination(res);
+        res = res.GetSubMatrix(0, res.colEff-1, res.rowEff, 1);
 
         return res;
     }
