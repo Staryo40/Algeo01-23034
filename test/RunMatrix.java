@@ -1,7 +1,7 @@
 package test;
-import bin.BicubicInterpolation;
-import bin.InputMatrix;
-import bin.Matrix;
+import src.BicubicInterpolation;
+import src.InputMatrix;
+import src.Matrix;
 
 public class RunMatrix {
     public static void main(String[] args){
