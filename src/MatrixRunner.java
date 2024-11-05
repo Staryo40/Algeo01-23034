@@ -1,16 +1,6 @@
 package src;
 import java.util.Scanner;
 
-import bin.BicubicInterpolation;
-import bin.Determinant;
-import bin.GaussJordan;
-import bin.InputMatrix;
-import bin.Inverse;
-import bin.LinearRegression;
-import bin.Matrix;
-import bin.MatrixOutput;
-import bin.PolinomialInterpolation;
-
 public class MatrixRunner{
     public static void clearScreen() {
         try {
