@@ -111,7 +111,7 @@ public class MatrixRunner{
                 solvedMatrix.printMatrix();
                 System.out.println("");
                 MatrixOutput.GetSPLSolutionGauss(solvedMatrix);
-                FileOutput.OutputGauss(pureInput, res, "Gauss");
+                FileOutput.OutputGauss(pureInput, solvedMatrix, "Gauss");
             }
             case 2 -> {
                 solvedMatrix = GaussJordan.GaussJordanElimination(inputMatrix);

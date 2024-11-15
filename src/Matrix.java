@@ -68,7 +68,7 @@ public class Matrix {
         }
         for (int i = 0; i < rowEff; i++) {
             for (int j = 0; j < colEff; j++) {
-                if (mem[i][j] != m.mem[i][j]) {
+                if (mem[i][j] - m.mem[i][j] < MIN_BOUND && mem[i][j] - m.mem[i][j] > -MIN_BOUND) {
                     return false;
                 }
             }

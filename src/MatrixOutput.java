@@ -76,7 +76,9 @@ public class MatrixOutput {
                 boolean HasParameter = false;
                 for (int j = expectedLeadingOne + 1; j < m.colEff - 1; j++) {
                     if (m.mem[i][j] < 0) {
-                        System.out.printf(" + %s%c", Matrix.formatDouble(-m.mem[i][j]), parameters[j]);
+                        if (m.mem[i][m.colEff-1] != 0)
+                            System.out.printf(" + ");
+                        System.out.printf("%s%c", Matrix.formatDouble(-m.mem[i][j]), parameters[j]);
                         HasParameter = true;
                     } else if (m.mem[i][j] > 0) {
                         System.out.printf(" - %s%c", Matrix.formatDouble(m.mem[i][j]), parameters[j]);
@@ -103,6 +105,24 @@ public class MatrixOutput {
             case 2 -> GetSPLManySolution(m);
             default -> throw new AssertionError();
         }
+    }
+
+    public static void GetSPLSolutionGauss(Matrix m) {
+        int leadingIdx;
+        for (int i = 0; i < m.rowEff; i++) {
+            int j = 0;
+            while (j < m.rowEff - 1 && m.mem[i][j] == 0) {
+                j++;
+            }
+            leadingIdx = j;
+            if (leadingIdx >= m.colEff - 1) {
+                break;
+            }   
+            for (j = 0; j < i; j++) {
+                m.RowAddition(j, i, -m.mem[j][leadingIdx]);
+            }
+        }
+        GetSPLSolution(m);
     }
 
     public static void GetSPLCramerSolution(Matrix m){
