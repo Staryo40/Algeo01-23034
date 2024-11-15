@@ -245,7 +245,7 @@ public class MatrixRunner{
                 System.out.println("The determinant of that matrix is: ");
                 double resDet = Determinant.detKofaktor(inputMatrix);
                 System.out.println(resDet);
-                System.out.print("The inverse of the matrix with adjoint method is: ");
+                System.out.println("The inverse of the matrix with adjoint method is: ");
                 Matrix res = Inverse.inverseAdj(inputMatrix);
                 res.printMatrix();
                 System.out.println("");
@@ -324,6 +324,7 @@ public class MatrixRunner{
                 Matrix resConstant = QuadraticRegression.regress(sampleMatrix);
                 for (int i = 0; i < resConstant.rowEff; i++){
                     System.out.printf("a%d: %.2f", i, resConstant.mem[i][0]);
+                    System.out.println("");
                 }
                 System.out.println("");
                 System.out.printf("So result of linear regression with x values provided is = %.2f", QuadraticRegression.predict(resConstant, xEstimation.GetTranspose()));

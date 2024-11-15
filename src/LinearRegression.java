@@ -5,6 +5,9 @@ public class LinearRegression {
       /* Input: m adalah matriks dengan kolom terakhirnya berupa y sampel dan kolom lainnya adalah nilai x0, x1, ..., xn yang menghasilkan y 
          Output: vektor model parameter yang berisi beta0, beta1, ..., betaN */
       Matrix parameterMatrix = AugmentOnesCol(m, 0);
+      if (parameterMatrix.rowEff > parameterMatrix.colEff-1){
+         parameterMatrix = parameterMatrix.GetSubMatrix(0, 0, parameterMatrix.colEff-1, parameterMatrix.colEff);
+      }
       parameterMatrix = GaussJordan.GaussJordanElimination(parameterMatrix);
 
       Matrix modelParameter = parameterMatrix.GetSubMatrix(0, parameterMatrix.colEff-1, parameterMatrix.rowEff, 1);

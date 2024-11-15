@@ -1,16 +1,14 @@
 package test;
-import bin.BicubicInterpolation;
-import bin.InputMatrix;
-import bin.Matrix;
+import src.InputMatrix;
 
 public class RunMatrix {
     public static void main(String[] args){
-        InputMatrix inputMatrix = new InputMatrix();
-        InputMatrix.RegressionInput regressionInput = inputMatrix.InputRegressionKeyBoard();
+        // InputMatrix inputMatrix = new InputMatrix();
+        // InputMatrix.RegressionInput regressionInput = inputMatrix.InputRegressionFile("regressionTest.txt");
         
-        // Output the results
-        regressionInput.sampleMatrix.printMatrix();
-        regressionInput.xMatrix.printMatrix();
+        // // Output the results
+        // regressionInput.sampleMatrix.printMatrix();
+        // regressionInput.xMatrix.printMatrix();
         /////////////////////////////////////////////////////////////////////////
         // InputMatrix inputMatrix = new InputMatrix();
         // InputMatrix.RegressionInput regressionInput = inputMatrix.InputRegressionFile("regressionTest.txt");
@@ -45,13 +43,13 @@ public class RunMatrix {
         // // Output the results
         // newMatrix.printMatrix();
         /////////////////////////////////////////////////////////////////////////
-        // InputMatrix inputMatrix = new InputMatrix();
-        // InputMatrix.BicubicInput bicubicInput = inputMatrix.InputBicubicFile("bicubicTest.txt");
+        InputMatrix inputMatrix = new InputMatrix();
+        InputMatrix.BicubicInput bicubicInput = inputMatrix.InputBicubicFile("bicubicTest.txt");
         
-        // // Output the results
-        // bicubicInput.matrix.printMatrix();
-        // System.out.println("x: " + bicubicInput.x);
-        // System.out.println("y: " + bicubicInput.y);
+        // Output the results
+        bicubicInput.matrix.printMatrix();
+        System.out.println("x: " + bicubicInput.x);
+        System.out.println("y: " + bicubicInput.y);
         /////////////////////////////////////////////////////////////////////////
         // InputMatrix inputMatrix = new InputMatrix();
         // InputMatrix.BicubicInput bicubicInput = inputMatrix.InputBicubicKeyBoard();
@@ -61,8 +59,8 @@ public class RunMatrix {
         // System.out.println("x: " + bicubicInput.x);
         // System.out.println("y: " + bicubicInput.y);
         /////////////////////////////////////////////////////////////////////////
-        Matrix xMatrix = BicubicInterpolation.MatrixX();
-        xMatrix.printMatrix();
+        // Matrix xMatrix = BicubicInterpolation.MatrixX();
+        // xMatrix.printMatrix();
         // Matrix fValuesCheck = new Matrix(16, 1);
         // double[] values = {21,98,125,153,51,101,161,59,0,42,72,210,16,12,81,96};
         // for (int i = 0; i < values.length; i++) {
