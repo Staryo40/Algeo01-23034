@@ -102,6 +102,7 @@ public class MatrixRunner{
             String filename = scanner.next();
             inputMatrix = input.InputMatrixFile("test/" + filename);
         }
+        Matrix pureInput = inputMatrix;
         Matrix solvedMatrix;
         switch(solveChoice){
             case 1 -> {
@@ -109,8 +110,8 @@ public class MatrixRunner{
                 System.out.println("Here is the end matrix from Gauss elimination");
                 solvedMatrix.printMatrix();
                 System.out.println("");
-                Matrix res = GaussJordan.GaussJordanElimination(inputMatrix);
-                MatrixOutput.GetSPLSolution(res);
+                MatrixOutput.GetSPLSolutionGauss(solvedMatrix);
+                FileOutput.OutputGauss(pureInput, res, "Gauss");
             }
             case 2 -> {
                 solvedMatrix = GaussJordan.GaussJordanElimination(inputMatrix);
@@ -118,6 +119,7 @@ public class MatrixRunner{
                 solvedMatrix.printMatrix();
                 System.out.println("");
                 MatrixOutput.GetSPLSolution(solvedMatrix);
+                FileOutput.OutputGauss(pureInput, solvedMatrix, "Gauss-Jordan");
             }
             case 3 -> {
                 System.out.println("Solved by inverse...");
@@ -177,16 +179,19 @@ public class MatrixRunner{
             String filename = scanner.next();
             inputMatrix = input.InputMatrixFile("test/" + filename);
         }
+        Matrix pureInput = inputMatrix;
         switch (solveChoice){
             case 1 -> {
                 System.out.print("The determinant of that matrix with triangular matrix is: ");
                 double res = Determinant.det(inputMatrix);
                 System.out.println(Matrix.formatDouble(res));
+                FileOutput.OutputDeterminant(pureInput, res, "triangular matrix");
             }
             case 2 -> {
                 System.out.print("The determinant of that matrix with cofactor is: ");
                 double res = Determinant.detKofaktor(inputMatrix);
                 System.out.println(Matrix.formatDouble(res));
+                FileOutput.OutputDeterminant(pureInput, res, "cofactor");
             }
         }
     }
@@ -237,12 +242,14 @@ public class MatrixRunner{
             String filename = scanner.next();
             inputMatrix = input.InputMatrixFile("test/" + filename);
         }
+        Matrix pureInput = inputMatrix;
         switch (solveChoice){
             case 1 -> {
                 System.out.println("The inverse of the matrix with Gauss-Jordan is: ");
                 Matrix res = Inverse.inverseGaussJordan(inputMatrix);
                 res.printMatrix();
                 System.out.println("");
+                FileOutput.OutputInverse(pureInput, res, "Gauss-Jordan");
             }
             case 2 -> {
                 System.out.println("The determinant of that matrix is: ");
@@ -252,6 +259,7 @@ public class MatrixRunner{
                 Matrix res = Inverse.inverseAdj(inputMatrix);
                 res.printMatrix();
                 System.out.println("");
+                FileOutput.OutputInverse(pureInput, res, "adjoint");
             }
         }
     }
@@ -317,6 +325,8 @@ public class MatrixRunner{
                 System.out.println("");
                 System.out.printf("So result of linear regression with x values provided is = %.2f", LinearRegression.Solve(sampleMatrix, xEstimation));
                 System.out.println(""); 
+                double solve = LinearRegression.Solve(sampleMatrix, xEstimation);
+                FileOutput.OutputRegression(resConstant, xEstimation, solve, "Linear");
 
             }
             case 2 -> {
@@ -332,6 +342,8 @@ public class MatrixRunner{
                 System.out.println("");
                 System.out.printf("So result of linear regression with x values provided is = %.2f", QuadraticRegression.predict(resConstant, xEstimation.GetTranspose()));
                 System.out.println(""); 
+                double solve = QuadraticRegression.predict(resConstant, xEstimation.GetTranspose());
+                FileOutput.OutputRegression(resConstant, xEstimation, solve, "Quadratic");
             }
         }
     }
@@ -373,6 +385,7 @@ public class MatrixRunner{
         System.out.printf("The estimate for %d: ", x);
         System.out.printf("%.2f", PolinomialInterpolation.GetEstimate(polinomial, x));
         System.out.println("");
+        FileOutput.OutputInterpolation(polinomial, x);
     }
 
     public static void SolveBicubic(){
@@ -417,12 +430,14 @@ public class MatrixRunner{
         System.out.println("");
         System.out.printf("So P(%.2f, %.2f) = %.2f", x, y, BicubicInterpolation.InterpolationSolve(BicubicConstants, x, y));
         System.out.println("");
+        FileOutput.OutputBicubic(BicubicConstants, x, y);
     }
 
     private static boolean confirmContinue() {
         Scanner scanner = new Scanner(System.in);
         String input;
-        
+
+        System.out.printf("\n");
         while (true) { // Infinite loop until a valid input is received
             System.out.println("");
             System.out.print("Do you want to continue? (y/n): ");
