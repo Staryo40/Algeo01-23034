@@ -7,6 +7,8 @@ public class Matrix {
     public int rowEff;
     public int colEff;
 
+    public static final double MIN_BOUND = 1e-8;
+
     // KONSTRUKTOR
     public Matrix(int nRow,int nCol){
         rowEff = nRow;
@@ -219,13 +221,19 @@ public class Matrix {
     public void RowMultiply(int targetRow, double mult) {
         for (int i = 0; i < colEff; i++) {
             mem[targetRow][i] *= mult;
+            if (mem[targetRow][i] < MIN_BOUND && mem[targetRow][i] > - MIN_BOUND) {
+                mem[targetRow][i] = 0;
+            }
         }
     }
 
     // Menambahkan baris dengan kelipatan baris lain
     public void RowAddition(int targetRow, int additionRow, double mult) {
         for (int i = 0; i < colEff; i++) {
-            mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i]; 
+            mem[targetRow][i] = mem[targetRow][i] + mult * mem[additionRow][i];
+            if (mem[targetRow][i] < MIN_BOUND && mem[targetRow][i] > - MIN_BOUND) {
+                mem[targetRow][i] = 0;
+            }
         }
     }
 
