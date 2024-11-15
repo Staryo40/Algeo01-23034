@@ -124,6 +124,9 @@ public class MatrixRunner{
             }
             case 4 -> {
                 System.out.println("Solved by Cramer...");
+
+                Matrix res = Cramer.cramer(inputMatrix);
+                MatrixOutput.GetSPLCramerSolution(res);
             }
         }
     }
@@ -318,7 +321,7 @@ public class MatrixRunner{
             }
             case 2 -> {
                 // Quadratic interpolation
-                System.out.println("The coefficients from multiple linear regression are:");
+                System.out.println("The coefficients from multiple quadratic regression are:");
                 sampleMatrix = sampleMatrix.Augment(sampleMatrix.GetSubMatrix(0, 0, sampleMatrix.rowEff, 1));
                 sampleMatrix.DeleteCol(0);
                 Matrix resConstant = QuadraticRegression.regress(sampleMatrix);

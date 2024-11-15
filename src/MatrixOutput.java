@@ -104,4 +104,11 @@ public class MatrixOutput {
             default -> throw new AssertionError();
         }
     }
+
+    public static void GetSPLCramerSolution(Matrix m){
+        System.out.println("Solusi SPL:");
+        for (int i = 0; i < m.rowEff; i++) {
+            System.out.printf("x%d = %f\n", (i+1), m.mem[i][0]);
+        }
+    }
 }
