@@ -236,13 +236,13 @@ public class MatrixRunner{
         }
         switch (solveChoice){
             case 1 -> {
-                System.out.print("The inverse of the matrix with Gauss-Jordan is: ");
+                System.out.println("The inverse of the matrix with Gauss-Jordan is: ");
                 Matrix res = Inverse.inverseGaussJordan(inputMatrix);
                 res.printMatrix();
                 System.out.println("");
             }
             case 2 -> {
-                System.out.print("The determinant of that matrix is: ");
+                System.out.println("The determinant of that matrix is: ");
                 double resDet = Determinant.detKofaktor(inputMatrix);
                 System.out.println(resDet);
                 System.out.print("The inverse of the matrix with adjoint method is: ");
@@ -366,7 +366,7 @@ public class MatrixRunner{
         System.out.println("The polynomial equation is: ");
         PolinomialInterpolation.PrintPolinomialInterpolation(polinomial);
         System.out.println("");
-        System.out.print("The polynomial equation is: ");
+        System.out.printf("The estimate for %d: ", x);
         System.out.printf("%.2f", PolinomialInterpolation.GetEstimate(polinomial, x));
         System.out.println("");
     }
