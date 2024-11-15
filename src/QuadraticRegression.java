@@ -45,6 +45,12 @@ public class QuadraticRegression {
         res = GaussJordan.GaussJordanElimination(res);
         res = res.GetSubMatrix(0, res.colEff-1, res.rowEff, 1);
 
+        // System.out.println("@@@@@@@@@@@");
+        // data.printMatrix();
+        // res.printMatrix();
+        // model.printMatrix();
+        // target.printMatrix();
+        // System.out.println("@@@@@@@@@@@");
         return res;
     }
 
@@ -179,4 +185,15 @@ public class QuadraticRegression {
         return vars;
     }
     
+    // Mengembalikan data dengan y yang di kolom terakhir menjadi kolom pertama
+    public static Matrix getQuadraticData(Matrix data){
+        /*
+         * Format input menempatkan y di kolom terakhir
+         * Pada QuadraticRegression, y ditempatkan di kolom pertam
+         * Fungsi ini menyesuaikan input untuk QuadraticRegression
+         */
+        Matrix y = data.GetSubMatrix(0, data.colEff-1, data.rowEff, 1);
+
+        return y.Augment(data.GetSubMatrix(0, 0, data.rowEff, data.colEff-1));
+    }
 }
