@@ -1,0 +1,3 @@
+Solved by Cramer...
+Determinan matriks -0.0
+Solusi SPL:
