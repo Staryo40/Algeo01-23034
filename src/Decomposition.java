@@ -61,7 +61,10 @@ public class Decomposition {
             }
             // Jika pivot tak nol tidak ditemukan
             if (pivot==0){
-                System.out.println("LU Decomposition failed");
+                // System.out.println("LU Decomposition failed");
+                L = Matrix.UNDEFINED;
+                U = Matrix.UNDEFINED;
+                P = Matrix.UNDEFINED;
                 return;
             }
 

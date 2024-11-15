@@ -16,6 +16,9 @@ public class Determinant {
              */
             Decomposition factors = new Decomposition();
             factors.decomposeLUP(m);
+            if (factors.L == Matrix.UNDEFINED){
+                return 0;
+            }
             double det = 1;
             det *= Determinant.detTriangular(factors.U);
             det *= Determinant.detKofaktor(factors.P);      // Division by 1 or -1
@@ -83,7 +86,7 @@ public class Determinant {
          * Matrix m segitiga atas atau segitiga bawah
          */
         int i = 0;
-        int res = 1;
+        double res = 1;
         while (i<m.rowEff){
             res *= m.mem[i][i];
             i++;

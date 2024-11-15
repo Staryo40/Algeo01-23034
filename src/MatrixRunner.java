@@ -177,7 +177,7 @@ public class MatrixRunner{
         switch (solveChoice){
             case 1 -> {
                 System.out.print("The determinant of that matrix with triangular matrix is: ");
-                double res = Determinant.detTriangular(inputMatrix);
+                double res = Determinant.det(inputMatrix);
                 System.out.println(Matrix.formatDouble(res));
             }
             case 2 -> {
