@@ -337,7 +337,7 @@ public class MatrixRunner{
 
                 System.out.println("The coefficients from multiple quadratic regression are:");
                 for (int i = 0; i < resConstant.rowEff; i++){
-                    System.out.printf("%.2f", i, resConstant.mem[i][0]);
+                    System.out.printf("%.2f", resConstant.mem[i][0]);
                     System.out.println("");
                 }
                 System.out.println("");
@@ -381,7 +381,7 @@ public class MatrixRunner{
         System.out.println("The polynomial equation is: ");
         PolinomialInterpolation.PrintPolinomialInterpolation(polinomial);
         System.out.println("");
-        System.out.printf("The estimate for %d: ", x);
+        System.out.printf("The estimate for %.2f: ", x);
         System.out.printf("%.2f", PolinomialInterpolation.GetEstimate(polinomial, x));
         System.out.println("");
         FileOutput.OutputInterpolation(polinomial, x);
