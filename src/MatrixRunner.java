@@ -362,11 +362,12 @@ public class MatrixRunner{
         }
         Matrix sampleMatrix = inputInterpolation.matrix;
         double x = inputInterpolation.x;
+        Matrix polinomial = PolinomialInterpolation.GetPolinomialInterpolation(sampleMatrix);
         System.out.println("The polynomial equation is: ");
-        PolinomialInterpolation.PrintPolinomialInterpolation(sampleMatrix);
+        PolinomialInterpolation.PrintPolinomialInterpolation(polinomial);
         System.out.println("");
         System.out.print("The polynomial equation is: ");
-        System.out.printf("%.2f", PolinomialInterpolation.GetEstimate(sampleMatrix, x));
+        System.out.printf("%.2f", PolinomialInterpolation.GetEstimate(polinomial, x));
         System.out.println("");
     }
 
