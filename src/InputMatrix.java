@@ -1,4 +1,4 @@
-package bin;
+package src;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -110,7 +110,16 @@ public class InputMatrix {
             x = parseDouble(sepRow[0]);
             y = parseDouble(sepRow[1]);
 
-            return new BicubicInput(rawInput, x, y);
+            Matrix FinalInput = new Matrix(16,1);
+            int finalIDX = 0;
+            for (int i = 0; i < 4; i++){
+                for (int j = 0; j < 4; j++){
+                    FinalInput.mem[finalIDX][0] = rawInput.mem[i][j]; 
+                    finalIDX++;
+                }
+            }
+
+            return new BicubicInput(FinalInput, x, y);
         } else {
             System.out.println("Error: Not enough lines in file for x and y inputs.");
             return null; 
@@ -329,17 +338,17 @@ public class InputMatrix {
             }
         }
 
-        Matrix newXMatrix = new Matrix (m,1);
-        System.out.printf("Enter dalam satu baris dengan spasi nilai x (%d buah) untuk taksir x: ", m);
+        Matrix newXMatrix = new Matrix (n,1);
+        System.out.printf("Enter dalam satu baris dengan spasi nilai x (%d buah) untuk taksir x: ", n);
         System.out.println("");
         String inputRow = scanner.nextLine();
         String[] sepRow = inputRow.split(" ");
-        while (sepRow.length != m){
-            System.out.printf("Jumlah x yang diinput tidak sesuai (tidak %d), coba lagi: ", m);
+        while (sepRow.length != n){
+            System.out.printf("Jumlah x yang diinput tidak sesuai (tidak %d), coba lagi: ", n);
             inputRow = scanner.nextLine();
             sepRow = inputRow.split(" ");
         } 
-        for (int i = 0; i < m; i++){
+        for (int i = 0; i < n; i++){
             newXMatrix.mem[i][0] = parseDouble(sepRow[i]);
         }
         

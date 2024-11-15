@@ -1,16 +1,6 @@
 package src;
 import java.util.Scanner;
 
-import bin.BicubicInterpolation;
-import bin.Determinant;
-import bin.GaussJordan;
-import bin.InputMatrix;
-import bin.Inverse;
-import bin.LinearRegression;
-import bin.Matrix;
-import bin.MatrixOutput;
-import bin.PolinomialInterpolation;
-
 public class MatrixRunner{
     public static void clearScreen() {
         try {
@@ -116,7 +106,7 @@ public class MatrixRunner{
         switch(solveChoice){
             case 1 -> {
                 solvedMatrix = GaussJordan.GaussElimination(inputMatrix);
-                System.out.println("Here is the end matrix from gauss elimination");
+                System.out.println("Here is the end matrix from Gauss elimination");
                 solvedMatrix.printMatrix();
                 System.out.println("");
                 Matrix res = GaussJordan.GaussJordanElimination(inputMatrix);
@@ -124,7 +114,7 @@ public class MatrixRunner{
             }
             case 2 -> {
                 solvedMatrix = GaussJordan.GaussJordanElimination(inputMatrix);
-                System.out.println("Here is the end matrix from gauss elimination");
+                System.out.println("Here is the end matrix from Gauss-Jordan elimination");
                 solvedMatrix.printMatrix();
                 System.out.println("");
                 MatrixOutput.GetSPLSolution(solvedMatrix);
