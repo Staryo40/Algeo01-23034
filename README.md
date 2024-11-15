@@ -20,7 +20,7 @@ Proyek ini meliputi berbagai cara memanipulasi matrix dan berbagai metode estima
 ## Usage
 
 ```
-java bin/MatrixRunner
+java -cp bin src/MatrixRunner.java
 ```
 
 ## Anggota Kelompok
