@@ -1,0 +1,14 @@
+Begining matrix:
+1 -2 1 0
+0 0 0 0
+0 0 0 0
+
+End matrix after Gauss-Jordan elimination:
+1 -2 1 0
+0 0 0 0
+0 0 0 0
+
+Solusi Parametrik:
+x1 =  + 2s - 1t
+x2 = s
+x3 = t

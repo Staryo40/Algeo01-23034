@@ -1,0 +1,14 @@
+Begining matrix:
+1.0000 0 -0.8806 -0.3500
+0 1 2.0519 2.1314
+0 0 0 0
+
+End matrix after Gauss elimination:
+1.0000 0 -0.8806 -0.3500
+0 1 2.0519 2.1314
+0 0 0 0
+
+Solusi Parametrik:
+x1 = -0.3500 + 0.8806s
+x2 = 2.1314 - 2.0519s
+x3 = s

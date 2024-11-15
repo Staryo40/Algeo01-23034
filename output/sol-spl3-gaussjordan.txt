@@ -1,0 +1,11 @@
+Begining matrix:
+1 1 1 0
+0 0 0 1
+0 0 0 0
+
+End matrix after Gauss-Jordan elimination:
+1 1 1 0
+0 0 0 1
+0 0 0 0
+
+Tidak ada solusi!

@@ -1,0 +1,12 @@
+Linearregression coefficients:
+4.2684
+-0.0103
+5,01e-03
+-5,16e-03
+
+With x values:
+24.7000
+87.2300
+30
+
+Solution: 4.2972
