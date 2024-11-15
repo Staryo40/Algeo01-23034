@@ -26,11 +26,14 @@ public class GaussJordan {
                 if (targetIdx != -1) {
                     break;
                 }
-                if (++leadingIdx == m.colEff) {
+                leadingIdx++;
+                if (leadingIdx >= m.colEff) {
                     return m;
                 }
             }
-            m.RowSwap(i, targetIdx);
+            if (targetIdx != i) {
+                m.RowSwap(i, targetIdx);
+            }
             
             /* Kalikan baris ke-i agar mendapatkan baris yang memiliki 1 utama */
             m.RowMultiply(i, 1 / m.mem[i][leadingIdx]);
@@ -56,7 +59,8 @@ public class GaussJordan {
                 if (targetIdx != -1) {
                     break;
                 }
-                if (++leadingIdx == m.colEff) {
+                leadingIdx++;
+                if (leadingIdx >= m.colEff) {
                     return m;
                 }
             }
